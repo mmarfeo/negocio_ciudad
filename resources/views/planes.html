@@ -1,0 +1,1179 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+
+    <link href="css/all.css" rel="stylesheet">
+
+    <!-- Add the slick-theme.css if you want default styling -->
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+    <!-- Add the slick-theme.css if you want default styling -->
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/>
+
+    <style type="text/css">
+        .home_header
+        {
+            background: url(img/background.png) no-repeat center center fixed;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+            color: #ffffff;
+            padding-bottom: 2em;
+        }
+        .home_header a {
+            color: #ffffff;
+        }
+        .navbar-toggler-icon {
+            background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(255,255,255, 0.5)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E");
+        }
+        .navbar-toggler {
+            border-color: rgb(255,255,255);
+        }
+        .home_title {
+            padding-top: 0.5em;
+            padding-bottom:2em;
+        }
+        .home_title img {
+            margin-bottom: 1em;
+        }
+        .home_search .input-group-text {
+            background-color: #ffffff;
+        }
+        .home_business {
+            padding-top: 2em;
+            padding-bottom: 2em;
+        }
+
+        .business_container {
+            padding: 1em;
+            text-align: center;
+        }
+
+        .home_contact {
+            background-color: #003245;
+            color: #8c8c8c;
+            padding-top: 1em;
+            padding-bottom: 1em;
+        }
+        
+        .contenedor-tarjetas{
+            min-height: 600px;
+        }
+
+        /* Estilos de la tarjeta */
+        .wrapper {
+  position: relative;
+  perspective: 40em;
+  display: grid;
+  transform-style: preserve-3d;
+  
+}
+
+.card {
+  grid-area: 1 / 1;
+  height: 500px;
+  /* width: 400px; */
+  width: 300px;
+  transform: translateX(10px) rotateY(25deg) rotateX(10deg);
+ /*  background: rgba(249, 198, 26, 0.88); */
+  background: #007bff;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 30px;
+ /*  color: #000; */
+ color:white;
+  text-transform: uppercase;
+  font-size: 60px;
+  font-weight: 900;
+  backface-visibility: hidden;
+  box-shadow: 0 10px 30px -3px rgba(0,0,0,.1);
+}
+
+/* h1 {
+  font-size: 60px;
+  font-weight: 900;
+} */
+
+.card .enclosed {
+  /* background: #000; */
+  line-height: 1;
+  /* color: rgba(249, 198, 26, 1); */
+  color: WHITE;
+  padding: 0 5px;
+  display: inline-block;
+  transform: translate(-1px, 1px) scale(0.75);
+  transform-origin: right center;
+}
+
+.wrapper:before {
+  --bw: 9px;
+  grid-area: 1 / 1;
+  content: '';
+  backface-visibility: hidden;
+  height: 100%;
+  width: 100%;
+  margin-top: calc(-1 * var(--bw));
+  margin-left: calc(-1 * var(--bw));
+  background: transparent;
+  transform: translateX(-60px) rotateY(-30deg) rotateX(15deg) scale(1.03);
+  pointer-events: none;
+ /*  border: var(--bw) solid #000; */
+ border: var(--bw) solid rgba(100, 101, 104, 0.699);
+  box-sizing: content-box;
+}
+
+
+.wrapper:hover > div,
+.wrapper:hover:before {
+  transform: none;
+}
+
+
+.wrapper > div,
+.wrapper:before {
+  will-change: transform;
+  transition: .3s transform cubic-bezier(.25,.46,.45,1);
+}
+
+
+/* About us */
+
+
+.contenedor{
+    width: 90%;
+    max-width: 1400px;
+    margin: auto;
+    overflow: hidden;
+}
+
+.contenedor1{
+    width: 90%;
+    max-width: 1400px;
+    margin: auto;
+    overflow: hidden;
+}
+
+.about-us{
+    background: #f2f2f2;
+}
+
+.contenedor-articulo{
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 60px;
+    justify-content: space-around;
+
+}
+
+.articulo{
+    width: 22%;
+    /* background: rgb(17, 141, 213); */
+    background: white;
+    margin-bottom: 30px;
+    border-radius: 10px;
+    padding: 45px 30px 60px 30px;
+    transition: 0.5s;
+   /*  margin: 30px; */
+}
+
+
+.articulo:hover{
+    box-shadow: 0 4px 10px rgba(17,29,48, .26) ;
+}
+
+
+.articulo > center > i{
+
+    font-size: 25px;
+    color: rgb(17, 141, 213);
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    padding-top: 12px;
+}
+
+.articulo>h3{
+    font-size: 24px;
+    margin-top: 30px;
+    margin-bottom: 15px;
+}
+
+.articulo > p{
+    font-weight: 100;
+    color:#5d6678;
+    margin-top: 15px;
+    padding-bottom: 20px;
+}
+
+.articulo>a{
+    color: #5d6678;
+    font-weight: 400;
+    text-decoration: none;
+}
+
+.articulo > a:hover{
+    color:#EA3B74 ;
+    transition: color .5s;
+
+}
+
+
+@media screen and (max-width:1379px){
+
+  .articulo > center > i{
+font-size: 25px;
+color: rgb(17, 141, 213);
+display: inline-block;
+width: 35px;
+height: 35px;
+text-align: center;
+padding-top: 5px;
+}
+
+.h4, h4 {
+    font-size: 1.3rem;
+}
+
+.articulo {
+    width: 22%;
+    background: white;
+    margin-bottom: 30px;
+    border-radius: 10px;
+    padding: 20px 5px 20px 5px;
+    transition: 0.5s;
+}
+
+.articulo>h3 {
+    font-size: 20px;
+    margin-top: 15px;
+    margin-bottom: 10px;
+}
+
+}
+
+@media screen and (max-width:1076px){
+
+.articulo > center > i{
+font-size: 25px;
+color: rgb(17, 141, 213);
+display: inline-block;
+width: 30px;
+height: 30px;
+text-align: center;
+padding-top: 5px;
+}
+
+.articulo>h3 {
+    font-size: 20px;
+    margin-top: 15px;
+    margin-bottom: 10px;
+}
+
+.h4, h4 {
+    font-size: 1.1rem;
+}
+
+.articulo {
+    width: 22%;
+    background: white;
+    margin-bottom: 30px;
+    border-radius: 10px;
+    padding: 20px 5px 20px 5px;
+    transition: 0.5s;
+}
+
+}
+
+@media screen and (max-width:976px){
+
+.articulo > center > i{
+font-size: 25px;
+color: rgb(17, 141, 213);
+display: inline-block;
+width: 80px;
+height: 45px;
+text-align: center;
+padding-top: 5px;
+}
+
+.articulo>h3 {
+    font-size: 20px;
+    margin-top: 15px;
+    margin-bottom: 10px;
+}
+
+.h4, h4 {
+    font-size: 1.1rem;
+}
+
+.articulo {
+    width: 22%;
+    background: white;
+    margin-bottom: 30px;
+    border-radius: 10px;
+    padding: 20px 5px 20px 5px;
+    transition: 0.5s;
+}
+
+.rotate{
+  padding: 5px 15px 5px 15px;
+}
+
+}
+
+@media screen and (max-width:880px){
+/* About us */
+
+.home_header
+        {
+            padding-bottom: 0em;
+        }
+
+  .contenedor-articulo {
+    margin-top: 40px;
+}
+
+.articulo{
+    width: 40%;
+}
+
+.articulo > center > i{
+font-size: 25px;
+color: rgb(17, 141, 213);
+display: inline-block;
+width: 50px;
+height: 45px;
+text-align: center;
+padding-top: 5px;
+}
+
+}
+
+@media screen and (max-width:620px){
+/* About us */
+
+.articulo{
+    width: 40%;
+}
+
+.articulo > center > i{
+font-size: 25px;
+color: rgb(17, 141, 213);
+display: inline-block;
+width: 40px;
+height: 45px;
+text-align: center;
+padding-top: 5px;
+}
+
+}
+
+@media screen and (max-width:600px){
+/* About us */
+
+.home_header
+        {
+            padding-bottom: 0em;
+        }
+
+  .contenedor-articulo {
+    margin-top: 40px;
+}
+
+.articulo{
+    width: 90%;
+}
+
+.articulo > center > i{
+font-size: 25px;
+color: rgb(17, 141, 213);
+display: inline-block;
+width: 80px;
+height: 45px;
+text-align: center;
+padding-top: 5px;
+}
+
+}
+
+@media screen and (max-width:460px){
+  .home_header
+        {
+            padding-bottom: 0em;
+        }
+
+  .contenedor-articulo {
+    margin-top: 30px;
+}
+
+.home_title {
+            padding-top: 0.5em;
+            padding-bottom:0em;
+        }
+}
+
+
+@media screen and (max-width:424px){
+/* About us */
+
+.home_header
+        {
+            padding-bottom: 0em;
+        }
+
+  .contenedor-articulo {
+    margin-top: 30px;
+}
+
+.home_title {
+            padding-top: 0.5em;
+            padding-bottom:0em;
+        }
+
+.articulo{
+    width: 90%;
+}
+
+.articulo > center > i{
+font-size: 25px;
+color: rgb(17, 141, 213);
+display: inline-block;
+width: 60px;
+height: 45px;
+text-align: center;
+padding-top: 5px;
+}
+
+}
+
+@media screen and (max-width:406px){
+/* About us */
+
+.home_header
+        {
+            padding-bottom: 0em;
+        }
+
+  .contenedor-articulo {
+    margin-top: 30px;
+}
+
+.home_title {
+            padding-top: 0.3em;
+            padding-bottom:0em;
+        }
+
+.articulo{
+    width: 90%;
+}
+
+.h1, h1 {
+    font-size: 2rem;
+}
+
+}
+
+@media screen and (max-width:331px){
+
+.h1, h1 {
+    font-size: 1.8rem;
+}
+
+}
+
+@media screen and (max-width:324px){
+/* About us */
+
+.articulo{
+    width: 90%;
+}
+
+.articulo > center > i{
+font-size: 25px;
+color: rgb(17, 141, 213);
+display: inline-block;
+width: 48px;
+height: 45px;
+text-align: center;
+padding-top: 5px;
+}
+
+}
+
+@media screen and (max-width:300px){
+
+.h1, h1 {
+    font-size: 1.5rem;
+}
+
+}
+
+@media screen and (max-width:267px){
+/* About us */
+
+.articulo{
+    width: 90%;
+}
+
+.articulo > center > i{
+font-size: 25px;
+color: rgb(17, 141, 213);
+display: inline-block;
+width: 43px;
+height: 43px;
+text-align: center;
+padding-top: 5px;
+}
+
+.h1, h1 {
+    font-size: 1.3rem;
+}
+
+}
+
+@media screen and (max-width:242px){
+/* About us */
+
+.articulo{
+    width: 90%;
+}
+
+.articulo > center > i{
+font-size: 25px;
+color: rgb(17, 141, 213);
+display: inline-block;
+width: 40px;
+height: 40px;
+text-align: center;
+padding-top: 5px;
+}
+
+}
+
+
+/* html,
+body {
+  height: 100%;
+} */
+
+/* body {
+  display: grid;
+  place-items: center;
+  background:
+    linear-gradient(to bottom right, #3C4BBD 15%, transparent),
+    radial-gradient(circle at 100% 0%, rgba(255,255,255,.2) 10%, transparent 20%) center center / 15px 15px,
+    linear-gradient(to bottom right, #3C4BBD, #57ADD8);
+} */
+
+
+
+/* tarjeta 2 font */
+
+@import 'https://fonts.googleapis.com/css?family=Lily+Script+One';
+/* body {
+  background: #eee;
+  font-family: 'Lily Script One';
+} */
+
+/* .cards {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 300px;
+  height: 300px;
+  margin: -150px;
+  float: left;
+  perspective: 500px;
+} */
+
+/* .content {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  box-shadow: 0 0 15px rgba(0,0,0,0.1);
+
+  transition: transform 1s;
+  transform-style: preserve-3d;
+}
+
+.cards:hover .content {
+  transform: rotateY( 180deg ) ;
+  transition: transform 0.5s;
+}
+
+.front,
+.back {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background: white;
+  line-height: 300px;
+  color: #03446A;
+  text-align: center;
+  font-size: 60px;
+  border-radius: 5px;
+  backface-visibility: hidden;
+}
+
+.back {
+  background: #03446A;
+  color: white;
+  transform: rotateY( 180deg );
+} */
+
+.plans__item__list{
+  padding-left: 0px;
+}
+
+li{
+  list-style:none;
+}
+
+li > p {
+  text-align: center;
+}
+
+li > p:hover{
+  color: #8c8c8c;
+  /* color: navy; */
+  /* font-style: italic; */
+}
+
+.estilo-titulo-h3-h4{
+  text-align: center;
+}
+
+.rotate{
+  transition: transform 1s ease-out;
+}
+.rotate:hover{
+  transform: rotate(360deg);
+}
+
+.color-linea{
+  background: rgb(17, 141, 213);
+ /*  border: 5px solid bisque; */
+}
+
+.importe{
+  background-color: white;
+  color: rgb(17, 141, 213);
+}
+
+.modal_contact a {
+  color: #ffffff;
+}
+
+.texto-footer{
+  color: white;
+  font-size: 16px;
+}
+
+#texto-footer-mail{
+    color: white;
+    text-decoration: none;
+}
+
+#texto-footer-mail:hover{
+    text-decoration: none;
+    font-size: 16.3px;
+}
+
+</style>
+
+
+
+    <title>Negocios en tu ciudad</title>
+</head>
+<body>
+<div class="home_header">
+    <nav class="navbar navbar-expand-lg">
+        <a class="navbar-brand" href="/inicio">
+          <img src="img/logo_nav.png" height="40">
+        </a>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+            </ul>
+        </div>
+    </nav>
+    <div class="container text-center">
+        <div class="row home_title">
+            <div class="col">
+                <img src="img/logo.png" height="100">
+                <h1>¿Qué plan necesitas?</h1>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+<section class="about-us">
+    <div class="contenedor1">
+<!--         <center><h2 class="titulo">Nuestros Planes</h2></center> -->
+        <div class="contenedor-articulo">
+            
+          <div class="articulo">
+                <!-- <i class="fas fa-candy-cane"></i> -->
+              
+              <center>   
+                  <i class="fas fa-mobile-alt rotate"></i>
+                  <i class="fas fa-laptop-code rotate"></i>
+              </center>
+                
+               <hr class="color-linea">
+
+                <h3 class="estilo-titulo-h3-h4">Página Web responsive de Presentación</h3>
+
+                <hr class="color-linea">
+
+                <h4 class="estilo-titulo-h3-h4"> <mark class="importe">Gratis!!</mark></h4>
+
+                <hr class="color-linea">
+                                              
+                    <ul class="plans__item__list">
+
+                      <li>
+                        <p>
+                          Si tenés página web, la conectamos desde un link y el serivicio es gratuito.
+                        </p>
+                      </li>
+
+                      <hr class="color-linea">
+
+                      <li>
+                        <p>
+                          Plantilla de diseño web adaptables a cualquier dispositivo móvil (Celulares, tablets y más). 
+                        </p>
+                      </li>
+
+                      <hr class="color-linea">
+
+                      <li>
+                        <p>
+                          Descripción y datos de contacto visibles (redes sociales, whatsapp, sitio web, horarios de atención).
+                        </p>
+                      </li>
+
+                      <hr class="color-linea">
+
+                      <li>
+                        <p>
+                          Plantilla con diseño estandar.
+                        </p> 
+                      </li>
+
+                      <hr class="color-linea">
+
+                      <li>
+                        <p>
+                          Vinculación con Redes Sociales que dispongas.
+                        </p>
+                      </li>
+
+                      <hr class="color-linea">
+
+                      <li>
+                       <p>
+                        Completá el formulario y publica tu aviso de manera gratuita.
+                      </p>
+                      </li>
+
+                      <hr class="color-linea">
+
+                      <li>
+                        <p>
+                          Activación en 48 hs.
+                        </p>
+                      </li>
+
+                      <hr class="color-linea">
+
+                      <li>
+                        <p>
+                         Cancelación del servicio de manera inmediata.
+                       </p>
+                      </li>
+
+                      <hr class="color-linea">
+                      
+                      <li class="text-center">
+                        <a class="btn btn-primary" target="_blank" href="/Nutricionista_Juan_Perez" role="button">Ver Ejemplo</a>         
+                      </li>
+
+                    </ul>
+
+            </div>
+            
+            <div class="articulo">
+                <center>
+                  <i class="fas fa-code rotate"></i>
+                  <i class="fas fa-mobile-alt rotate"></i>
+                  <i class="fas fa-laptop-code rotate"></i>
+                </center>
+
+                <hr class="color-linea">
+
+                <h3 class="estilo-titulo-h3-h4" >Página Web reponsive estática Comercial</h3>
+
+                <hr class="color-linea">
+
+                <h4 class="estilo-titulo-h3-h4" > <mark class="importe">$ 200 </mark> por mes</h4>
+
+                <hr class="color-linea">
+
+                    <ul class="plans__item__list">
+
+                      <li>
+                        <p>
+                          Si tenés página web, la conectamos desde un link y el serivicio es gratuito.
+                        </p>
+                      </li>
+
+                      <hr class="color-linea">
+
+                      <li>
+                        <p>
+                          Plantilla de diseño web adaptables a cualquier dispositivo móvil (Celulares, tablets y más). 
+                        </p>
+                      </li>
+
+                      <hr class="color-linea">
+
+                      <li>
+                        <p>
+                          Descripción y datos de contacto visibles (redes sociales, whatsapp, sitio web, horarios de atención).
+                        </p>
+                      </li>
+
+                      <hr class="color-linea">
+
+                      <li>
+                        <p>
+                          Plantilla con diseño estandar.
+                        </p> 
+                      </li>
+
+                      <hr class="color-linea">
+
+                      <li>
+                        <p>
+                          Vinculación con Redes Sociales que dispongas.
+                        </p>
+                      </li>
+
+                      <hr class="color-linea">
+
+                      <li>
+                        <p>
+                          Mapa de Ubicación con Google Maps.
+                        </p>
+                      </li>
+
+                      <hr class="color-linea">
+
+                      <li>
+                        <p>
+                          Descripción de tus servicios, fotos, mapa de ubicación, etc.
+                        </p>
+                      </li>
+
+                      <hr class="color-linea">
+
+                      <li>
+                        <p>
+                          Cancelación del servicio de manera inmediata.
+                       </p>
+                      </li>
+
+                      <hr class="color-linea">
+
+                      <li class="text-center">
+                        <a class="btn btn-primary" target="_blank" href="/carpinteria_pinocho" role="button">Ver Ejemplo</a>         
+                      </li>
+
+
+                    </ul>
+            </div>
+
+
+            <div class="articulo">
+              
+              <center>
+                <i class="fas fa-globe rotate"></i>
+                <i class="fas fa-code rotate"></i>
+                <i class="fas fa-mobile-alt rotate"></i>
+                <i class="fas fa-laptop-code rotate"></i>
+              </center>
+
+              <hr class="color-linea">
+
+                <h3 class="estilo-titulo-h3-h4" >Página Web responsive Personalizada</h3>
+
+                <hr class="color-linea">
+
+                <h4 class="estilo-titulo-h3-h4" > <mark class="importe">$ 600 </mark> por mes</h4>
+
+                <hr class="color-linea">
+
+                <ul class="plans__item__list">
+                  <li>
+                    <p>
+                      Si tenés página web, la conectamos desde un link y el serivicio es gratuito.
+                    </p>
+                  </li>
+                  
+                  <hr class="color-linea">
+
+                  <li>
+                    <p>
+                      Plantilla de diseño web adaptables a cualquier dispositivo móvil (Celulares, tablets y más). 
+                    </p>
+                  </li>
+                  
+                  <hr class="color-linea">
+
+                  <li>
+                    <p>
+                      Descripción y datos de contacto visibles (redes sociales, whatsapp, sitio web, horarios de atención).
+                    </p>
+                  </li>
+                  
+                  <hr class="color-linea">
+
+                  <li>
+                    <p>
+                      Plantilla con diseño propio y original.
+                    </p> 
+                  </li>
+                  
+                  <hr class="color-linea">
+
+                  <li>
+                    <p>
+                      Vinculación con Redes Sociales que dispongas.
+                    </p>
+                  </li>
+                  
+                  <hr class="color-linea">
+
+                  <li>
+                    <p>
+                      Mapa de Ubicación con Google Maps.
+                    </p>
+                  </li>
+                  
+                  <hr class="color-linea">
+
+                  <li>
+                      <p>
+                        Contiene información detallada de tus servicios/productos con fotos.
+                      </p>
+                  </li>
+                  
+                  <hr class="color-linea">
+
+                  <li>
+                      <p>
+                        Contacto por WhatsApp.
+                      </p>
+                  </li>
+                  
+                  <hr class="color-linea">
+
+                  <li>
+                    <p>
+                      Cancelación del servicio de manera inmediata.
+                   </p>
+                  </li>
+                  
+                  <hr class="color-linea">
+
+                  <li class="text-center">
+                    <a class="btn btn-primary" target="_blank" href="/misia_paula" role="button">Ver Ejemplo</a>         
+                  </li>
+
+                </ul>
+                
+            </div>
+
+            <div class="articulo">
+              <center>
+                <i class="fas fa-code rotate"></i>
+                <i class="fas fa-mobile-alt rotate"></i>
+                <i class="fas fa-laptop-code rotate"></i>
+                <i class="fas fa-database rotate"></i>
+              </center>
+
+              <hr class="color-linea">
+
+              <h3 class="estilo-titulo-h3-h4" >Página Web con administración de Productos</h3>
+
+              <hr class="color-linea">
+
+              <h4 class="estilo-titulo-h3-h4" > <mark class="importe">$ 800 </mark> por mes</h4>
+
+              <hr class="color-linea">
+
+              <ul class="plans__item__list">
+
+                <li>
+                  <p>
+                    Si tenés página web, la conectamos desde un link y el serivicio es gratuito.
+                  </p>
+                </li>
+                
+                <hr class="color-linea">
+
+                <li>
+                  <p>
+                    Plantilla de diseño web adaptables a cualquier dispositivo móvil (Celulares, tablets y más). 
+                  </p>
+                </li>
+                
+                <hr class="color-linea">
+
+                <li>
+                  <p>
+                    Descripción y datos de contacto visibles (redes sociales, whatsapp, sitio web, horarios de atención).
+                  </p>
+                </li>
+                  
+                <hr class="color-linea">
+                                <li>
+                  <p>
+                    Plantilla con diseño propio y original.
+                  </p> 
+                </li>
+                  
+                <hr class="color-linea">
+
+                <li>
+                  <p>
+                    Vinculación con Redes Sociales que dispongas.
+                  </p>
+              </li>
+                  
+              <hr class="color-linea">
+
+              <li>
+                <p>
+                  Mapa de Ubicación con Google Maps.
+                </p>
+              </li>
+                  
+              <hr class="color-linea">
+
+              <li>
+                <p>
+                  Contiene información detallada de tus servicios/productos con fotos.
+                </p>
+              </li>
+                  
+              <hr class="color-linea">
+
+              <li>
+                <p>
+                  Contacto por WhatsApp.
+                </p>
+              </li>
+                  
+              <hr class="color-linea">
+
+                <li>
+                  <p>
+                    Crea, elimina y modifica los precios de tus productos.
+                  </p>
+                </li>
+                  
+                <hr class="color-linea">
+
+                <li>
+                  <p>
+                    Integración con Mercado Pago en tu página Web.
+                  </p>
+                </li>
+                  
+                <hr class="color-linea">
+
+
+
+                <li>
+                  <p>
+                    Cancelación del servicio de manera inmediata.
+                 </p>
+                </li>
+                  
+                <hr class="color-linea">
+
+<!--                 <li class="text-center">
+                  <a class="btn btn-primary" href="#" role="button">Ver Ejemplo</a>         
+                </li> -->
+
+              </ul>
+              
+          </div>
+
+
+
+
+
+        </div>
+    </div>
+    </div>
+</section>
+
+
+
+<footer class="home_contact pt-5 pb-4" id="home_contact">
+    <div class="container">
+        <div class="row">
+           
+            <div class="col-8 offset-2 col-sm-6 offset-sm-3	col-md-1 offset-md-0 col-lg-1 offset-lg-1 col-xl-2 offset-xl-0 text-center mb-2">
+                <img src="img/logo.png" height="55">
+            </div>
+
+            <div class="col-8 offset-2 col-sm-6 offset-sm-0	col-md-4 offset-md-3 col-lg-3 offset-lg-2 col-xl-3 offset-xl-2 text-center">
+                <div class="texto-footer text-center">
+                    <strong>Teléfono</strong>
+                </div>
+                
+                <h5 class="texto-footer mt-1">
+                    1551506536 - 1566733688 
+                </h5>
+            </div>
+
+            <div class="col-8 offset-2 col-sm-6 offset-sm-0	col-md-3 offset-md-0 col-lg-3 offset-lg-2	col-xl-3 offset-xl-2 text-center">
+              <address class="texto-footer">
+                  <div class="text-center">
+                      <strong>Email</strong>
+                  </div>
+                 <div class="text-center">
+                    <a id="texto-footer-mail" href="mailto:#">info@negociosentuciudad.com</a>
+                </div>
+                </address>
+            </div>
+
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery and Bootstrap Bundle (includes Popper) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+
+
+
+
+</body>
+</html>
