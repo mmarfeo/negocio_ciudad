@@ -32,7 +32,11 @@ class ProductController extends Controller
         
         
         ->paginate(20); */
-        $products = Product::all ();
+        $products = Product::all();
+        /* $products = Product::all()->random(); */
+        /* $products = Product::all()->random(9); */
+        /* $products = DB::table("negocios")->Random(); */
+          /* $products = Product::query()->inRandomOrder('id')->first(); */
 
 /*         dd($products[0]->name);
 
@@ -184,7 +188,9 @@ foreach($products as $product) {
 
   public function Buscar($search = null){
     if (!empty ($search)){
-        $products = Product:: where("nombre", "LIKE", "%".$search."%")
+   /*      dd($search);
+  exit; */
+        $products = Product::where("nombre", "LIKE", "%".$search."%")
                               ->orWhere("url", "LIKE", "%".$search."%" )
                               ->orWhere("profesion", "LIKE", "%".$search."%" )
                               ->orWhere("horario", "LIKE", "%".$search."%" )
@@ -197,7 +203,8 @@ foreach($products as $product) {
                               ->orWhere("palabras_clave", "LIKE", "%".$search."%" )
                               -> orderBy("id")
                               ->paginate(20);
-
+/*            dd($products);
+  exit; */
     }else{
       $products = Product::orderBy("id")->paginate(20);
     }
@@ -221,7 +228,7 @@ function InfoPlantilla(Request $slug){
 
   $products = Product::where('slug',$id)->first();
 
-/*   dd($products);
+  /* dd($products);
   exit; */
   /* $products = Product::all(); */
 
@@ -248,15 +255,14 @@ $id_products=$products->id;
 
 $propiedades = propiedades_plantillas::where('negocio_id',$id_products)->first();
 
-/* dd($propiedades);
+/* dd($plantilla_id);
   exit;  */
 
   switch ($plantilla_id) {
     case 1:
-      return view("01-misia_paula",compact ("products", "propiedades"));
+      return view("01-misia-paula",compact ("products", "propiedades"));
         break;
     case 2;
-     /*  return view("02-independiente",$products); */
       return view("02-independiente", compact ("products", "propiedades"));
         break;
     case 3:
@@ -269,7 +275,14 @@ $propiedades = propiedades_plantillas::where('negocio_id',$id_products)->first()
       return view("05-tarjeta",compact ("products", "propiedades"));
       break;
     case 6:
-      return view("planes",compact ("products", "propiedades"));
+     /*  dd("lslsllsllsl"); */
+      return view("06-sugary");
+      break;
+    case 7:
+      return view("07-mncontadores",compact ("products", "propiedades"));
+      break;
+    case 8:
+      return view("08-pizza-nico",compact ("products", "propiedades"));
       break;
 }
 

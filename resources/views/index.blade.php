@@ -137,7 +137,9 @@
             height: 35px;
         }
 
-
+        .card-img-top{
+            max-height: 90% !important;
+        }
         
     </style>
     <title>Negocios en tu ciudad</title>
@@ -178,9 +180,8 @@
                                     <input class="form-control" type="text" id="buscar" placeholder="Busca por rubro, por nombre, por categoría" aria-label="Search" />
                                     <button class="btn btn-light" id="button-submit" type="submit"><i class="fas fa-search"></i></button>
                                 </div>
-                            </form>
-             
-                            
+                        </form>
+                              
             </div>
         </div>
     </div>
@@ -212,7 +213,7 @@
 <div class="products-container col-12 row mb-5">
         @forelse ($products as $product)
 
-           <!--  <a target="_blank" href="/{{$product->vista}}" id="etiqueta-producto">  onerror="this.onerror=null; this.src='img/negocio.png'" -->
+         
                 <div class=" col-xs-10 col-md-6 col-lg-2 business_container">
                     <div class="business_img">
                         <img id="logo" src="{{asset($product->nav_logo)}}" class="card-img-top" alt="{{asset($product->nav_logo)}}" onerror="this.onerror=null; this.src='{{asset('img/negocio.png')}}'" >
@@ -221,14 +222,16 @@
                         <h5> {{$product->nombre}}</h5>
                     </div>
                     <div class="business_description"></div>
+                  
                     <div class="business_button">
-                        <a href="{{$product->slug}}" class="btn btn-outline-info" target="_blank"><i class="fas fa-paper-plane"></i> Entrar</a>
+                        <a href="{{$product->url}}{{$product->slug}}" id="btn-entrar" class="btn btn-outline-info" target="_blank" onerror="this.onerror=null; this.href='{{$product->url}}'" ><i class="fas fa-paper-plane"></i> Entrar</a>
                     </div>
+                   
                 </div>
            <!--  </a> -->
 
         @empty
-            <p>No se encontraron productos</p>s
+            <p>No se encontraron productos</p>
         @endforelse
 </div>  
 
@@ -417,7 +420,22 @@
 				interval: 5000
 		        }); */
 
-            </script>
+ </script>
+    
+<!--   <script>
+    let negocios = @json($products);
+         
+    negocios.forEach(function(negocio){
+
+        if(negocio.url == null || negocio.url == ""){ 
+                $('#div-btn-entrar').append("<a id='btn-entrar' class='btn btn-outline-info' target='_blank' ><i class='fas fa-paper-plane'></i> Entrar</a>");
+                $('#btn-entrar').prop("href", "/inicio/" + negocio.slug);
+             }else{
+                $('#div-btn-entrar').append("<a id='btn-entrar' class='btn btn-outline-info' target='_blank' ><i class='fas fa-paper-plane'></i> Entrar</a>");
+                $('#btn-entrar').prop("href", negocio.url);
+            }
+    });
+  </script>      -->   
 
 </body>
 </html>
