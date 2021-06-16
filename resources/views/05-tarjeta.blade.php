@@ -136,16 +136,16 @@
         <!-- Third party plugin JS-->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
         <!-- Contact form JS-->
-        <script src="assets/mail/jqBootstrapValidation.js"></script>
-        <script src="assets/mail/contact_me.js"></script>
+   <!--      <script src="assets/mail/jqBootstrapValidation.js"></script>
+        <script src="assets/mail/contact_me.js"></script> -->
         <!-- Core theme JS-->
-        <script src="js/scripts.js"></script>
+        <!-- <script src="js/scripts.js"></script> -->
 
 
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+       <!--  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
         <script src="../../js/config.js"></script>
-        <script src="../../js/funciones.js"></script>
+        <script src="../../js/funciones.js"></script> -->
       
       
         <script>
@@ -154,8 +154,7 @@
             let negocio = @json($products);
             let propiedades = @json($propiedades);
 
-            console.log("verrr   " + propiedades);
-            
+                       
             $('#favicon_nombre').html(negocio.nombre);
             $('#title_nombre').html(negocio.nombre);
             $('#nav_profesion').html(negocio.profesion);
@@ -168,10 +167,18 @@
             let ruta_img = "img/05-tarjeta/" + negocio.slug + "/"
 
             /* favicon */
-            $('#favicon_icon').prop("href",  ruta_img + propiedades.favicon_logo);
-      
-             /* variables para el nav */
+           /*  $('#favicon_icon').prop("href",  ruta_img + propiedades.favicon_logo); */
+           console.log("verrr " + propiedades.nav_logo );
+
             if(propiedades.nav_logo == null || propiedades.nav_logo == "" ){ 
+                $('#favicon_icon').prop("href",  "img/negocio.ico");
+            }else{
+                $('#favicon_icon').prop("href",  ruta_img + propiedades.favicon_logo);
+            }
+      
+            
+             /* variables para el nav */
+            if(negocio.nav_logo == null || negocio.nav_logo == "" ){ 
                 $('#nav_logo').prop("src",  "img/logo.png");
             }else{
                 $('#nav_logo').prop("src",  ruta_img + propiedades.nav_logo);

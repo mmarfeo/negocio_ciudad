@@ -8,6 +8,7 @@
         <title id="favicon_nombre"></title>
         <!-- Favicon-->
         <link rel="icon" type="image/x-icon" id="favicon_icon"/>
+<!--         <link rel="shortcut icon" type="image/x-icon"  href="img/08-Pizza-Nico/icon-logo-pizza.ico" > -->
         <!-- Font Awesome icons (free version)-->
         <script src="https://use.fontawesome.com/releases/v5.15.1/js/all.js" crossorigin="anonymous"></script>
         <!-- Google fonts-->
@@ -394,10 +395,13 @@
             let ruta_img = "img/02-independiente/" + negocio.slug + "/"
             /* favicon */
 
-            $('#favicon_icon').prop("href",  ruta_img + propiedades.favicon_logo);
+            if(propiedades.nav_logo == null || propiedades.nav_logo == "" ){ 
+                $('#favicon_icon').prop("href",  "img/negocio.ico");
+            }else{
+                $('#favicon_icon').prop("href",  ruta_img + propiedades.favicon_logo);
+            }
       
-            /* variables para el nav */
-                          
+            /* variables para el nav */                        
              if(propiedades.nav_logo == null || propiedades.nav_logo == "" ){ 
                 $('#nav_logo').prop("src",  "img/logo.png");
              }else{

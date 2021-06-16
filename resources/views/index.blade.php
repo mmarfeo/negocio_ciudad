@@ -11,6 +11,9 @@
     <!-- <link href="css/all.css" rel="stylesheet"> -->
     <link href='{{asset("/css/all.css")}}' rel="stylesheet">
     
+    <title>Negocios en tu ciudad</title>
+        <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="img/negocio.ico"/>
 
     <!-- Add the slick-theme.css if you want default styling -->
    <!--  <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/> -->
@@ -135,10 +138,24 @@
 
         #button-submit{
             height: 35px;
+        
         }
 
         .card-img-top{
             max-height: 90% !important;
+            border-radius: 50%;
+            /* object-fit: cover; */
+            object-fit: contain;
+        /* object-fit: fill; */
+        /* object-fit: scale-down; */
+        /* object-fit: initial; */
+        min-height: 165 px;
+         min-width: 165 px;
+        
+        }
+        #logo{
+            min-height: 165 px;
+         min-width: 165 px;
         }
         
     </style>

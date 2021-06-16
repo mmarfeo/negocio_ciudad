@@ -260,7 +260,7 @@ $propiedades = propiedades_plantillas::where('negocio_id',$id_products)->first()
 
   switch ($plantilla_id) {
     case 1:
-      return view("01-misia-paula",compact ("products", "propiedades"));
+      return view("01-misia-paula");
         break;
     case 2;
       return view("02-independiente", compact ("products", "propiedades"));
@@ -275,14 +275,13 @@ $propiedades = propiedades_plantillas::where('negocio_id',$id_products)->first()
       return view("05-tarjeta",compact ("products", "propiedades"));
       break;
     case 6:
-     /*  dd("lslsllsllsl"); */
       return view("06-sugary");
       break;
     case 7:
-      return view("07-mncontadores",compact ("products", "propiedades"));
+      return view("07-mncontabilidad");
       break;
     case 8:
-      return view("08-pizza-nico",compact ("products", "propiedades"));
+      return view("08-pizza-nico");
       break;
 }
 

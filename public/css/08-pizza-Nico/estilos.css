@@ -6,7 +6,7 @@
 
 .galeria {
     font-family: "open sans";
-    background-image: url("/img/Templates-img/21-Pizza-Nico/img/Fondo4.jpg");
+    background-image: url("../../img/08-Pizza-Nico/Fondo4.jpg");
     background-size: 100% 100%;
     /*   background-attachment: fixed;  */ /*Esta propiedad hace que por mas que haga scroll la foto queda igual, no se mueve*/
     padding: 8%;
@@ -137,7 +137,7 @@ footer {
     animation-duration: 5s;
     animation-iteration-count: infinite;
     animation-timing-function: linear;
-    background-image: url('/img/Templates-img/21-Pizza-Nico/img/repartidor-pizza.png');
+    background-image: url('../../img/08-Pizza-Nico/repartidor-pizza.png');
     background-size:100% 100%;
 
 }
