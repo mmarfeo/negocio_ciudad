@@ -24,7 +24,7 @@ use App\Http\Controllers\ProductController;
 }); */
 
 
-Route::get('/planes.html', function () {
+Route::get('/planes', function () {
     return view('planes');
 });
 

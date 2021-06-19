@@ -82,7 +82,7 @@
 				<div class="content">
 					<header>
 						<h2>Mis trabajos</h2>
-						<p>Te mostramos los trabajos que realizamos.</p>
+						<p>Nuestros Trabajos.</p>
 					</header>
 
 				<!-- Gallery  -->
@@ -144,7 +144,7 @@
 
 				<!-- Menu -->
 					<ul class="menu">
-						<li>&copy; Untitled</li><li>Diseñado: <a href="https://html5up.net">HTML5 UP</a></li>
+						<li>&copy; </li><li>Diseñado: <a href="/planes">Negocios En Tu Ciudad</a></li>
 					</ul>
 
 			</footer>

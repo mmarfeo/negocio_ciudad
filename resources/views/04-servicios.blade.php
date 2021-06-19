@@ -5,7 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Landing Page HTML | AlexCG Design</title>
+    <title id="favicon_nombre"></title>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" id="favicon_icon"/>
     <link href="https://fonts.googleapis.com/css?family=Raleway:200,300,400,500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/04-servicios/estilos.css">
 </head>
@@ -169,6 +171,8 @@
     /* aca estoy convirtiendo una variable de php a js y esa variable la estoy usando en la vista */
     let negocio = @json($products);
     let propiedades = @json($propiedades);
+
+ 
       $('#title_nombre').html(negocio.nombre);
       $('#nombre').html(negocio.nombre);
       $('#telefono').html(negocio.telefono);
@@ -192,8 +196,16 @@
       }
 
 
-      /* variables para el nav */
       let ruta_img = "img/04-servicios/" + negocio.slug + "/"
+
+      if(propiedades.favicon_logo == null || propiedades.favicon_logo == "" ){ 
+          $('#favicon_icon').prop("href",  "img/negocio.ico");
+      }else{
+          $('#favicon_icon').prop("href",  ruta_img + propiedades.favicon_logo);
+      }
+
+      /* variables para el nav */
+      
 
        if(propiedades.nav_logo == null){ 
           $('#nav_logo').remove('a');

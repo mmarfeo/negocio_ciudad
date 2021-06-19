@@ -175,7 +175,7 @@
 					<ul class="copyright">
                         <!-- <li>&copy; Untitled.</li> -->
                         <li>
-                        <i >Sitio creado por: <a class="link-soft" target="_blank"  href="/verProduct/19-Software-Hoy-index">Software Hoy!!</a>  &copy;</i>
+                        <i >Sitio creado por: <a class="link-soft" target="_blank"  href="/planes">Negocios En Tu Ciudad</a>  &copy;</i>
                         </li>
 <!-- 						<li>Images: <a href="http://unsplash.com">Unsplash</a>.</li>
 						<li>Design: <a href="http://templated.co">TEMPLATED</a>.</li> -->

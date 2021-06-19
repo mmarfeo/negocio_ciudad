@@ -391,11 +391,12 @@
             $('#direccion').html("Dirección: " + negocio.direccion + " " + negocio.ciudad); 
             $('#email').html(negocio.email==null ? "Buenos Aires": "Email: " + negocio.email); 
             
-
+       
+            
             let ruta_img = "img/02-independiente/" + negocio.slug + "/"
             /* favicon */
 
-            if(propiedades.nav_logo == null || propiedades.nav_logo == "" ){ 
+            if(propiedades.favicon_logo == null || propiedades.favicon_logo == "" ){ 
                 $('#favicon_icon').prop("href",  "img/negocio.ico");
             }else{
                 $('#favicon_icon').prop("href",  ruta_img + propiedades.favicon_logo);

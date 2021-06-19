@@ -136,7 +136,7 @@
 					<ul class="icons">
 					<ul class="copyright">
 
-					<a href="http://www.softwarehoy.com" target="_blank"><li>Página creada por: { Software Hoy } <!-- &copy; --><!--<a href="http://templated.co">TEMPLATED</a>.--></li> </a>
+					<a href="/planes" target="_blank"><li>Página creada por: Negocios En Tu Ciudad <!-- &copy; --><!--<a href="http://templated.co">TEMPLATED</a>.--></li> </a>
                         <!--  <li>&copy;</li> -->
 					</ul>
 				</div>

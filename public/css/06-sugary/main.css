@@ -2286,7 +2286,7 @@ input, select, textarea {
 
 	#intro {
 /*         background: url("images/overlay.png"), url("../../img/06-sugary/sugary-logo.jpeg"); */
- /*   		background-image: url("images/overlay.png"), url("../../img/06-sugary/sugary-logo.jpeg"); */
+   		background-image: url("images/overlay.png"), url("../../img/06-sugary/sugary-inicio.jpeg");
 		background-size: 0px, cover;
 		background-attachment: fixed, fixed;
         /* background-position: top left, bottom center; */

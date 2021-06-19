@@ -255,7 +255,7 @@ $id_products=$products->id;
 
 $propiedades = propiedades_plantillas::where('negocio_id',$id_products)->first();
 
-/* dd($plantilla_id);
+/* dd($propiedades);
   exit;  */
 
   switch ($plantilla_id) {

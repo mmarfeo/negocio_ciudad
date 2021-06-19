@@ -97,7 +97,7 @@
 
                     <li class="creada">
 
-                        <i >Sitio creado por: <a class="link-soft" target="_blank"  href="http://www.softwarehoy.com">{ Software Hoy }</a>  &copy;</i>
+                        <i >Sitio creado por: <a class="link-soft" target="_blank"  href="/planes">Negocios En Tu Ciudad</a>  &copy;</i>
                     </li>
             </ul>
             </div>
