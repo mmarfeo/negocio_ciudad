@@ -7,6 +7,9 @@
 <html>
 	<head>
 		<title>MNContabilidad</title>
+		<!-- Favicon-->
+		<link rel="icon" type="image/x-icon" href="img/07-mncontabilidad/logo-mncontabilidad.ico"/>
+
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
@@ -105,28 +108,7 @@
 						<!-- <p>Envianos tu consulta.</p> -->
 						<p>mncontabilidad@gmail.com</p>
 					</header>
-		<!-- 			<div class="container 75%">
-						
-					</div> -->
-					<!-- <form action="#" method="POST">
-						<div class="container 75%">
-							<div class="row uniform 50%">
-								<div class="6u 12u$(xsmall)">
-									<input name="name" placeholder="Nombre" type="text" />
-								</div>
-								<div class="6u$ 12u$(xsmall)">
-									<input name="email" placeholder="Email" type="email" />
-								</div>
-								<div class="12u$">
-									<textarea name="message" placeholder="Mensaje" rows="4"></textarea>
-								</div>
-							</div>
-						</div>
-						<ul class="actions">
-							<li><input type="submit" class="special" value="Enviar" /></li>
-							<li><input type="reset" class="alt" value="Borrar" /></li>
-						</ul>
-					</form> -->
+
 				</div>
 			</section>
 

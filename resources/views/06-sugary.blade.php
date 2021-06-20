@@ -7,6 +7,8 @@
 <html>
 	<head>
 		<title>Sugary</title>
+		<!-- Favicon-->
+		<link rel="icon" type="image/x-icon" href="img/06-sugary/logo-sugary.ico"/>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="css/06-sugary/main.css" />

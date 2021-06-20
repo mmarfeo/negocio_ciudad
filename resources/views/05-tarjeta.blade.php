@@ -168,7 +168,6 @@
 
             /* favicon */
            /*  $('#favicon_icon').prop("href",  ruta_img + propiedades.favicon_logo); */
-           console.log("verrr " + propiedades.nav_logo );
 
             if(propiedades.nav_logo == null || propiedades.nav_logo == "" ){ 
                 $('#favicon_icon').prop("href",  "img/negocio.ico");

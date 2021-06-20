@@ -132,31 +132,6 @@
        </div>
     </footer>
 
-<!--     <footer class="py-5 bg-primary">
-        <div class="footer-contenedor">
-          <div class="row" id="fila-1">
-    
-            <div class="contenedor-redes col-3 col-md-2 offset-5">
-              <h4><center><u>Redes sociales</u></center></h4>
-              <div id="social-media" class="social-media">
-                <center>
-                </center>      
-              </div>
-              <hr/>
-          </div>
-        </div>
-
-          <div class="row" id="fila-2">
-            <div class="col-3 col-md-4 offset-4">
-              <center>
-                <h6 id="footer_info_negocio"></h6>
-                <h6 id="footer-email"></h6>
-              </center>
-            </div>
-          </div>
-       
-      </footer>
-     -->
 
       <!-- jQuery and Bootstrap Bundle (includes Popper) -->
   <script src="https://kit.fontawesome.com/c15b744a04.js" crossorigin="anonymous"></script>

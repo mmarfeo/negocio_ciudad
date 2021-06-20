@@ -7,6 +7,9 @@
 <html>
 	<head>
 		<title>Misia Paula</title>
+		<!-- Favicon-->
+    	<link rel="icon" type="image/x-icon" href="img/01-misia_paula/Logo-Misia-Paula.ico"/>	
+
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<!--[if lte IE 8]><script src="assets/js/01-misia_paula/ie/html5shiv.js"></script><![endif]-->
@@ -108,9 +111,6 @@
 					<ul class="actions">
 						<li><a href="#" class="button big alt">Ir al inicio</a></li>
 					</ul>
-<!-- 					<ul class="actions">
-						<li><a target="_blank" href="https://calendar.google.com/calendar?cid=bHRpaTlidG5vNzAzYmFvdTlmOGlrc2M4dDRAZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ" class="button big alt">Reservar</a></li>
-					</ul> -->
 
 
 				</div>
@@ -145,25 +145,7 @@
                         <p>Teléfono: 4295-2027</p>
 
 					</header>
-<!-- 					<form action="#" method="POST">
-						<div class="container 75%">
-							<div class="row uniform 50%">
-								<div class="6u 12u$(xsmall)">
-									<input name="name" placeholder="Name" type="text" />
-								</div>
-								<div class="6u$ 12u$(xsmall)">
-									<input name="email" placeholder="Email" type="email" />
-								</div>
-								<div class="12u$">
-									<textarea name="message" placeholder="Message" rows="4"></textarea>
-								</div>
-							</div>
-						</div>
-						<ul class="actions">
-							<li><input type="submit" class="special" value="Submit" /></li>
-							<li><input type="reset" class="alt" value="Reset" /></li>
-						</ul>
-					</form> -->
+
 				</div>
 			</section>
 
@@ -177,8 +159,7 @@
                         <li>
                         <i >Sitio creado por: <a class="link-soft" target="_blank"  href="/planes">Negocios En Tu Ciudad</a>  &copy;</i>
                         </li>
-<!-- 						<li>Images: <a href="http://unsplash.com">Unsplash</a>.</li>
-						<li>Design: <a href="http://templated.co">TEMPLATED</a>.</li> -->
+
 					</ul>
 				</div>
 			</footer>
@@ -195,55 +176,6 @@
 
 			<script src="../../js/01-misia_paula/config.js"></script>
 			<script src="../../js/01-misia_paula/funciones.js"></script>
-
-
-			<script type="application/javascript">
-				$( document ).ready(function() {
-					const queryString = window.location.search;
-					const urlParams = new URLSearchParams(queryString);
-					const slug = urlParams.get('n');
-
-					let parametros = {
-						c : 'negocios',
-						a : 'listar_por_slug',
-						slug: slug
-					};
-					$.ajax({
-						method: "GET",
-						url: SERVER_API,
-						data: parametros
-					})
-						.done(function( res ) {
-							console.log(res);
-							mostrar(res);
-						});
-				});
-
-
-				function mostrar(negocio) {
-					$('#header_titulo').html(negocio.nombre);
-
-					let parametros = {
-						c : 'plantillas',
-						a : 'listar_propiedades',
-						negocio_id : negocio.id,
-						plantilla_id : negocio.plantilla_id            
-					};
-					$.ajax({
-						method: "GET",
-						url: SERVER_API,
-						data: parametros
-					})
-						.done(function( res ) {
-							console.log(res);
-							mostrar_propiedades(res);
-						});
-				}
-
-				function mostrar_propiedades(propiedades){
-					console.log(propiedades);
-				} 
-			</script>
 
 	</body>
 </html>
