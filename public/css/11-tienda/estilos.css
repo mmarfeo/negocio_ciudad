@@ -1,0 +1,168 @@
+/*
+ * Plantilla "Tienda" (id 11) -- e-commerce real con carrito y checkout,
+ * marketplace con Mercado Pago Connect (el cobro le llega directo a cada
+ * negocio). Mismo criterio que "Vidriera" (id 10): sin Bootstrap ni el kit
+ * de FontAwesome (ya da 403 en producción), Poppins/Inter para no
+ * fragmentar el sistema de tipografía de la Fase 5, Paso 1.
+ *
+ * A diferencia de las demás plantillas, "Tienda" es genérica a propósito
+ * (no está pensada para un rubro puntual como Vidriera con Rustika) --
+ * paleta neutra + un solo acento (verde azulado), para servir tanto a
+ * indumentaria como a productos de almacén o cualquier catálogo con foto.
+ */
+
+:root {
+    --td-bg: #f7f7f5;
+    --td-bg-raised: #ffffff;
+    --td-ink: #1c1c1a;
+    --td-ink-soft: #63635c;
+    --td-accent: #0f766e;
+    --td-accent-dark: #0b5a54;
+    --td-line: rgba(28, 28, 26, .12);
+    --td-shadow: 0 12px 26px -14px rgba(28, 28, 26, .3);
+    --td-radius: 12px;
+}
+
+* { box-sizing: border-box; }
+
+body#plantilla_tienda {
+    margin: 0;
+    background: var(--td-bg);
+    color: var(--td-ink);
+    font-family: "Inter", "Segoe UI", sans-serif;
+    line-height: 1.6;
+}
+
+#plantilla_tienda h1, #plantilla_tienda h2, #plantilla_tienda h3, #plantilla_tienda h4 {
+    font-family: "Poppins", "Segoe UI", sans-serif;
+    font-weight: 700;
+    line-height: 1.2;
+    margin: 0;
+}
+
+#plantilla_tienda a { color: inherit; text-decoration: none; }
+#plantilla_tienda img { max-width: 100%; display: block; }
+#plantilla_tienda .td-wrap { max-width: 1140px; margin: 0 auto; padding: 0 1.5rem; }
+
+/* -------- nav -------- */
+#plantilla_tienda .td-nav {
+    position: sticky; top: 0; z-index: 30;
+    background: var(--td-bg-raised);
+    border-bottom: 1px solid var(--td-line);
+}
+#plantilla_tienda .td-nav__row {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 1rem; padding: .85rem 0;
+}
+#plantilla_tienda .td-nav__brand { display: flex; align-items: center; gap: .6rem; min-width: 0; }
+#plantilla_tienda .td-nav__brand img { height: 40px; width: auto; border-radius: 8px; }
+#plantilla_tienda .td-nav__brand span { font-family: "Poppins", sans-serif; font-weight: 700; font-size: 1.1rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+#plantilla_tienda .td-cart-link {
+    display: inline-flex; align-items: center; gap: .5rem;
+    border: 1.5px solid var(--td-line); border-radius: 999px;
+    padding: .5rem 1.05rem; font-weight: 700; font-size: .9rem;
+}
+#plantilla_tienda .td-cart-link:hover { border-color: var(--td-accent); }
+#plantilla_tienda .td-cart-count {
+    background: var(--td-accent); color: #fff; border-radius: 999px;
+    min-width: 1.35rem; height: 1.35rem; display: inline-flex; align-items: center; justify-content: center;
+    font-size: .75rem; padding: 0 .3rem;
+}
+
+/* -------- botones -------- */
+#plantilla_tienda .td-btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
+    background: var(--td-accent); color: #fff !important;
+    padding: .7rem 1.3rem; border-radius: 8px; font-weight: 700; font-size: .95rem;
+    border: none; cursor: pointer; transition: background .15s ease;
+}
+#plantilla_tienda .td-btn:hover { background: var(--td-accent-dark); }
+#plantilla_tienda .td-btn:disabled { opacity: .55; cursor: not-allowed; }
+#plantilla_tienda .td-btn--ghost { background: transparent; color: var(--td-ink) !important; border: 1.5px solid var(--td-line); }
+#plantilla_tienda .td-btn--ghost:hover { border-color: var(--td-accent); background: transparent; }
+#plantilla_tienda .td-btn--block { display: flex; width: 100%; }
+
+/* -------- hero / encabezado de tienda -------- */
+#plantilla_tienda .td-hero { padding: 2.5rem 0 1.5rem; border-bottom: 1px solid var(--td-line); background: var(--td-bg-raised); }
+#plantilla_tienda .td-hero__eyebrow { font-size: .78rem; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; color: var(--td-accent-dark); }
+#plantilla_tienda .td-hero h1 { font-size: clamp(1.8rem, 3.6vw, 2.6rem); margin-top: .4rem; }
+#plantilla_tienda .td-hero p { margin-top: .6rem; color: var(--td-ink-soft); max-width: 52ch; }
+
+/* -------- grilla de productos -------- */
+#plantilla_tienda .td-section { padding: 2.75rem 0; }
+#plantilla_tienda .td-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 1.35rem; }
+#plantilla_tienda .td-card {
+    background: var(--td-bg-raised); border: 1px solid var(--td-line); border-radius: var(--td-radius);
+    overflow: hidden; display: flex; flex-direction: column; height: 100%;
+    box-shadow: var(--td-shadow); transition: transform .18s ease;
+}
+#plantilla_tienda .td-card:hover { transform: translateY(-4px); }
+#plantilla_tienda .td-card__img { aspect-ratio: 1 / 1; background: var(--td-bg); overflow: hidden; }
+#plantilla_tienda .td-card__img img { width: 100%; height: 100%; object-fit: cover; }
+#plantilla_tienda .td-card__img--placeholder { display: flex; align-items: center; justify-content: center; color: var(--td-ink-soft); font-size: .82rem; text-align: center; padding: 1rem; }
+#plantilla_tienda .td-card__body { padding: 1rem 1.1rem 1.2rem; display: flex; flex-direction: column; gap: .35rem; flex: 1; }
+#plantilla_tienda .td-card__body h3 { font-size: 1rem; }
+#plantilla_tienda .td-card__precio { font-family: "Poppins", sans-serif; font-weight: 700; color: var(--td-accent-dark); }
+#plantilla_tienda .td-card__stock { font-size: .78rem; color: var(--td-ink-soft); }
+#plantilla_tienda .td-card__stock--agotado { color: #b3261e; font-weight: 700; }
+#plantilla_tienda .td-card__cta { margin-top: auto; }
+#plantilla_tienda .td-empty { text-align: center; color: var(--td-ink-soft); padding: 3rem 0; }
+
+/* -------- detalle de producto -------- */
+#plantilla_tienda .td-detalle { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 2.5rem; align-items: start; }
+@media (max-width: 760px) { #plantilla_tienda .td-detalle { grid-template-columns: 1fr; } }
+#plantilla_tienda .td-detalle__img { border-radius: var(--td-radius); overflow: hidden; background: var(--td-bg-raised); border: 1px solid var(--td-line); aspect-ratio: 1 / 1; }
+#plantilla_tienda .td-detalle__img img { width: 100%; height: 100%; object-fit: cover; }
+#plantilla_tienda .td-detalle h1 { font-size: clamp(1.5rem, 3vw, 2rem); }
+#plantilla_tienda .td-detalle__precio { font-family: "Poppins", sans-serif; font-weight: 700; font-size: 1.5rem; color: var(--td-accent-dark); margin-top: .5rem; }
+#plantilla_tienda .td-detalle__desc { margin-top: 1rem; color: var(--td-ink-soft); }
+#plantilla_tienda .td-cantidad { display: flex; align-items: center; gap: .6rem; margin: 1.25rem 0; }
+#plantilla_tienda .td-cantidad input { width: 4.5rem; padding: .5rem; border: 1px solid var(--td-line); border-radius: 8px; text-align: center; }
+
+/* -------- carrito -------- */
+#plantilla_tienda .td-cart-item { display: flex; gap: 1rem; align-items: center; padding: 1rem 0; border-bottom: 1px solid var(--td-line); }
+#plantilla_tienda .td-cart-item__img { width: 64px; height: 64px; border-radius: 8px; overflow: hidden; background: var(--td-bg-raised); border: 1px solid var(--td-line); flex: 0 0 auto; }
+#plantilla_tienda .td-cart-item__img img { width: 100%; height: 100%; object-fit: cover; }
+#plantilla_tienda .td-cart-item__info { flex: 1; min-width: 0; }
+#plantilla_tienda .td-cart-item__precio { color: var(--td-ink-soft); font-size: .9rem; }
+#plantilla_tienda .td-cart-item__cantidad { width: 4rem; padding: .4rem; border: 1px solid var(--td-line); border-radius: 8px; text-align: center; }
+#plantilla_tienda .td-cart-item__quitar { color: #b3261e; font-size: .82rem; font-weight: 700; background: none; border: none; cursor: pointer; padding: 0; }
+#plantilla_tienda .td-cart-summary { background: var(--td-bg-raised); border: 1px solid var(--td-line); border-radius: var(--td-radius); padding: 1.5rem; position: sticky; top: 90px; }
+#plantilla_tienda .td-cart-summary__row { display: flex; justify-content: space-between; padding: .4rem 0; font-size: .95rem; }
+#plantilla_tienda .td-cart-summary__row--total { font-weight: 700; font-size: 1.15rem; border-top: 1px solid var(--td-line); margin-top: .5rem; padding-top: .8rem; }
+#plantilla_tienda .td-cart-layout { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 2.5rem; align-items: start; }
+@media (max-width: 760px) { #plantilla_tienda .td-cart-layout { grid-template-columns: 1fr; } }
+
+/* -------- checkout -------- */
+#plantilla_tienda .td-form-group { margin-bottom: 1.1rem; }
+#plantilla_tienda .td-form-group label { display: block; font-weight: 700; font-size: .88rem; margin-bottom: .35rem; }
+#plantilla_tienda .td-form-group input, #plantilla_tienda .td-form-group textarea, #plantilla_tienda .td-form-group select {
+    width: 100%; padding: .7rem .85rem; border: 1px solid var(--td-line); border-radius: 8px; font: inherit;
+}
+#plantilla_tienda .td-radio-group { display: flex; gap: 1.5rem; }
+#plantilla_tienda .td-radio-group label { display: flex; align-items: center; gap: .4rem; font-weight: 500; }
+#plantilla_tienda .td-alert { padding: .85rem 1rem; border-radius: 8px; font-size: .9rem; margin-bottom: 1.25rem; }
+#plantilla_tienda .td-alert--error { background: #fdecea; color: #8a1c14; }
+#plantilla_tienda .td-alert--success { background: #e6f4ea; color: #1e4620; }
+
+/* -------- resultado del pedido -------- */
+#plantilla_tienda .td-resultado { max-width: 40rem; margin: 0 auto; text-align: center; padding: 3.5rem 0; }
+#plantilla_tienda .td-resultado__icono { font-size: 3rem; margin-bottom: 1rem; }
+#plantilla_tienda .td-resultado h1 { font-size: 1.6rem; }
+#plantilla_tienda .td-resultado p { color: var(--td-ink-soft); margin-top: .75rem; }
+#plantilla_tienda .td-resultado__pedido { background: var(--td-bg-raised); border: 1px solid var(--td-line); border-radius: var(--td-radius); padding: 1.5rem; margin-top: 1.5rem; text-align: left; }
+
+/* -------- footer -------- */
+#plantilla_tienda .td-footer { background: var(--td-ink); color: #f0efe9; padding: 2.25rem 0; margin-top: 2rem; font-size: .88rem; }
+#plantilla_tienda .td-footer__row { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.25rem; }
+#plantilla_tienda .td-footer__brand { font-family: "Poppins", sans-serif; font-weight: 700; font-size: 1rem; }
+#plantilla_tienda .td-footer__meta { margin-top: .35rem; color: #c9c6bc; }
+#plantilla_tienda .td-footer__meta a { text-decoration: underline; }
+#plantilla_tienda .td-social { display: flex; gap: .75rem; }
+#plantilla_tienda .td-social a {
+    width: 36px; height: 36px; border-radius: 50%; border: 1px solid rgba(240, 239, 233, .3);
+    display: flex; align-items: center; justify-content: center;
+    transition: background .15s ease, border-color .15s ease;
+}
+#plantilla_tienda .td-social a:hover { background: var(--td-accent); border-color: var(--td-accent); }
+#plantilla_tienda .td-social svg { width: 16px; height: 16px; fill: currentColor; }

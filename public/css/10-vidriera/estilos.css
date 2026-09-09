@@ -1,0 +1,177 @@
+/*
+ * Plantilla "Vidriera" (id 10) -- pensada para gastronomía artesanal con
+ * carta de productos por foto y precio (panaderías, sanguicherías,
+ * heladerías, etc.), inspirada en el rubro de "sándwiches y focaccias de
+ * fermentación natural". Sin Bootstrap ni FontAwesome a propósito: el
+ * kit de FontAwesome que usan 03-productos/04-servicios ya da 403 en
+ * producción (ver housekeeping del proyecto) y Bootstrap solo agregaba
+ * ~76 KB de CSS heredado que ninguna plantilla nueva necesita repetir.
+ * Tipografía Poppins/Inter para no fragmentar el sistema de la Fase 5,
+ * Paso 1 (unificación de tipografía en las plantillas activas); todo lo
+ * demás (paleta, layout, motion) es propio de esta plantilla.
+ */
+
+:root {
+    --vd-bg: #f5efe2;
+    --vd-bg-raised: #fffaf0;
+    --vd-ink: #2a2118;
+    --vd-ink-soft: #6b5d4c;
+    --vd-accent: #c77b2e;
+    --vd-accent-dark: #a25f1e;
+    --vd-olive: #566b3d;
+    --vd-line: rgba(42, 33, 24, .14);
+    --vd-shadow: 0 14px 30px -12px rgba(42, 33, 24, .28);
+    --vd-radius: 14px;
+}
+
+* { box-sizing: border-box; }
+
+body#plantilla_vidriera {
+    margin: 0;
+    background: var(--vd-bg);
+    color: var(--vd-ink);
+    font-family: "Inter", "Segoe UI", sans-serif;
+    line-height: 1.6;
+}
+
+#plantilla_vidriera h1, #plantilla_vidriera h2, #plantilla_vidriera h3, #plantilla_vidriera h4 {
+    font-family: "Poppins", "Segoe UI", sans-serif;
+    font-weight: 700;
+    line-height: 1.15;
+    margin: 0;
+}
+
+#plantilla_vidriera a { color: inherit; text-decoration: none; }
+#plantilla_vidriera img { max-width: 100%; display: block; }
+#plantilla_vidriera .vd-wrap { max-width: 1140px; margin: 0 auto; padding: 0 1.5rem; }
+
+/* -------- animaciones, respetando reduced-motion -------- */
+@keyframes vd-marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@keyframes vd-fade-up { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+@keyframes vd-crossfade { 0%, 45% { opacity: 1; } 55%, 100% { opacity: 0; } }
+
+#plantilla_vidriera .vd-reveal { opacity: 0; transform: translateY(18px); transition: opacity .6s ease, transform .6s ease; }
+#plantilla_vidriera .vd-reveal.is-visible { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+    #plantilla_vidriera .vd-reveal { opacity: 1; transform: none; transition: none; }
+    #plantilla_vidriera .vd-ticker__track { animation: none; }
+    #plantilla_vidriera .vd-hero__bg span { animation: none; opacity: 1 !important; }
+}
+
+/* -------- nav -------- */
+#plantilla_vidriera .vd-nav {
+    position: sticky; top: 0; z-index: 30;
+    background: var(--vd-bg);
+    border-bottom: 1px solid var(--vd-line);
+}
+#plantilla_vidriera .vd-nav__row {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 1rem; padding: .75rem 0;
+}
+#plantilla_vidriera .vd-nav__brand { display: flex; align-items: center; gap: .6rem; min-width: 0; }
+#plantilla_vidriera .vd-nav__brand img { height: 42px; width: auto; border-radius: 8px; }
+#plantilla_vidriera .vd-nav__brand span { font-family: "Poppins", sans-serif; font-weight: 700; font-size: 1.1rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+#plantilla_vidriera .vd-nav__links { display: flex; gap: 1.4rem; font-size: .92rem; font-weight: 600; }
+#plantilla_vidriera .vd-nav__links a:hover { color: var(--vd-accent-dark); }
+#plantilla_vidriera .vd-btn {
+    display: inline-flex; align-items: center; gap: .5rem;
+    background: var(--vd-accent); color: #fff !important;
+    padding: .6rem 1.15rem; border-radius: 999px; font-weight: 700; font-size: .9rem;
+    white-space: nowrap; border: none; cursor: pointer;
+    transition: background .15s ease, transform .15s ease;
+}
+#plantilla_vidriera .vd-btn:hover { background: var(--vd-accent-dark); transform: translateY(-1px); }
+#plantilla_vidriera .vd-btn--ghost { background: transparent; color: var(--vd-ink) !important; border: 1.5px solid var(--vd-line); }
+#plantilla_vidriera .vd-btn--ghost:hover { border-color: var(--vd-accent); background: transparent; }
+@media (max-width: 700px) { #plantilla_vidriera .vd-nav__links { display: none; } }
+
+/* -------- ticker (banda de movimiento, inspirada en sitios con motion) -------- */
+#plantilla_vidriera .vd-ticker { background: var(--vd-olive); color: #fdf8ee; overflow: hidden; }
+#plantilla_vidriera .vd-ticker__track {
+    display: flex; width: max-content;
+    animation: vd-marquee 26s linear infinite;
+    padding: .5rem 0;
+}
+#plantilla_vidriera .vd-ticker__item {
+    display: flex; align-items: center; gap: .6rem;
+    padding: 0 1.75rem; font-size: .8rem; font-weight: 600;
+    text-transform: uppercase; letter-spacing: .06em; white-space: nowrap;
+}
+#plantilla_vidriera .vd-ticker__dot { width: 4px; height: 4px; border-radius: 50%; background: currentColor; opacity: .7; }
+
+/* -------- hero -------- */
+#plantilla_vidriera .vd-hero { position: relative; min-height: min(88vh, 720px); display: flex; align-items: flex-end; overflow: hidden; }
+#plantilla_vidriera .vd-hero__bg { position: absolute; inset: 0; background: linear-gradient(150deg, var(--vd-olive), var(--vd-ink)); }
+#plantilla_vidriera .vd-hero__bg span {
+    position: absolute; inset: 0; background-size: cover; background-position: center;
+    opacity: 0; animation: vd-crossfade 14s infinite;
+}
+#plantilla_vidriera .vd-hero__bg span:nth-child(1) { animation-delay: 0s; }
+#plantilla_vidriera .vd-hero__bg span:nth-child(2) { animation-delay: 4.6s; }
+#plantilla_vidriera .vd-hero__bg span:nth-child(3) { animation-delay: 9.2s; }
+#plantilla_vidriera .vd-hero__bg::after {
+    content: ""; position: absolute; inset: 0;
+    background: linear-gradient(0deg, rgba(20,15,10,.82) 0%, rgba(20,15,10,.35) 55%, rgba(20,15,10,.15) 100%);
+}
+#plantilla_vidriera .vd-hero__content { position: relative; z-index: 1; color: #fdf8ee; padding: 3.5rem 0; }
+#plantilla_vidriera .vd-hero__eyebrow { font-size: .8rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: #f0d9b5; }
+#plantilla_vidriera .vd-hero h1 { font-size: clamp(2.1rem, 5vw, 3.4rem); margin-top: .5rem; max-width: 20ch; }
+#plantilla_vidriera .vd-hero p { margin-top: .9rem; font-size: 1.05rem; max-width: 42ch; color: #ece2cf; }
+#plantilla_vidriera .vd-hero__ctas { display: flex; gap: .75rem; flex-wrap: wrap; margin-top: 1.6rem; }
+#plantilla_vidriera .vd-hero--empty { background: linear-gradient(150deg, var(--vd-olive), var(--vd-ink)); min-height: 55vh; }
+
+/* -------- secciones genéricas -------- */
+#plantilla_vidriera .vd-section { padding: 4rem 0; }
+#plantilla_vidriera .vd-section__head { max-width: 42rem; margin-bottom: 2.25rem; }
+#plantilla_vidriera .vd-eyebrow { font-size: .78rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--vd-accent-dark); }
+#plantilla_vidriera .vd-section__head h2 { font-size: clamp(1.5rem, 3vw, 2.1rem); margin-top: .4rem; }
+#plantilla_vidriera .vd-section__head p { margin-top: .6rem; color: var(--vd-ink-soft); }
+
+/* -------- nosotros / proceso -------- */
+#plantilla_vidriera .vd-proceso { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 1.25rem; }
+#plantilla_vidriera .vd-proceso__card { background: var(--vd-bg-raised); border: 1px solid var(--vd-line); border-radius: var(--vd-radius); padding: 1.5rem; }
+#plantilla_vidriera .vd-proceso__num { font-family: "Poppins", sans-serif; font-weight: 700; color: var(--vd-accent); font-size: 1.4rem; }
+#plantilla_vidriera .vd-proceso__card p { margin-top: .5rem; color: var(--vd-ink-soft); font-size: .95rem; }
+
+/* -------- menú / productos -------- */
+#plantilla_vidriera .vd-menu { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.5rem; }
+#plantilla_vidriera .vd-card {
+    background: var(--vd-bg-raised); border-radius: var(--vd-radius); overflow: hidden;
+    border: 1px solid var(--vd-line); box-shadow: var(--vd-shadow);
+    display: flex; flex-direction: column; height: 100%;
+    transition: transform .2s ease, box-shadow .2s ease;
+}
+#plantilla_vidriera .vd-card:hover { transform: translateY(-5px); }
+#plantilla_vidriera .vd-card__img { aspect-ratio: 4 / 3; overflow: hidden; background: var(--vd-bg); }
+#plantilla_vidriera .vd-card__img img { width: 100%; height: 100%; object-fit: cover; }
+#plantilla_vidriera .vd-card__img--placeholder { display: flex; align-items: center; justify-content: center; color: var(--vd-line); }
+#plantilla_vidriera .vd-card__body { padding: 1.15rem 1.25rem 1.35rem; display: flex; flex-direction: column; gap: .4rem; flex: 1; }
+#plantilla_vidriera .vd-card__top { display: flex; justify-content: space-between; align-items: baseline; gap: .75rem; }
+#plantilla_vidriera .vd-card__body h3 { font-size: 1.05rem; }
+#plantilla_vidriera .vd-card__precio { font-family: "Poppins", sans-serif; font-weight: 700; color: var(--vd-accent-dark); white-space: nowrap; }
+#plantilla_vidriera .vd-card__body p { color: var(--vd-ink-soft); font-size: .9rem; flex: 1; margin: 0; }
+#plantilla_vidriera .vd-card__cta { margin-top: .5rem; font-size: .85rem; font-weight: 700; color: var(--vd-olive); }
+#plantilla_vidriera .vd-menu-empty { color: var(--vd-ink-soft); text-align: center; padding: 2rem 0; }
+#plantilla_vidriera .vd-medios-pago { margin-top: 2rem; text-align: center; color: var(--vd-ink-soft); font-size: .92rem; }
+
+/* -------- info / ubicación -------- */
+#plantilla_vidriera .vd-info { background: var(--vd-bg-raised); border-top: 1px solid var(--vd-line); border-bottom: 1px solid var(--vd-line); }
+#plantilla_vidriera .vd-info__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 2rem; padding: 3rem 0; }
+#plantilla_vidriera .vd-info__item h4 { font-size: .95rem; text-transform: uppercase; letter-spacing: .04em; color: var(--vd-ink-soft); font-weight: 700; margin-bottom: .4rem; }
+#plantilla_vidriera .vd-info__item p { margin: 0; font-size: 1.02rem; }
+#plantilla_vidriera .vd-mapa { border: 0; width: 100%; height: 340px; display: block; }
+
+/* -------- footer -------- */
+#plantilla_vidriera .vd-footer { background: var(--vd-ink); color: #ece2cf; padding: 2.75rem 0 2rem; }
+#plantilla_vidriera .vd-footer__row { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.25rem; }
+#plantilla_vidriera .vd-footer__brand { font-family: "Poppins", sans-serif; font-weight: 700; }
+#plantilla_vidriera .vd-social { display: flex; gap: .75rem; }
+#plantilla_vidriera .vd-social a {
+    width: 38px; height: 38px; border-radius: 50%; border: 1px solid rgba(236, 226, 207, .3);
+    display: flex; align-items: center; justify-content: center;
+    transition: background .15s ease, border-color .15s ease;
+}
+#plantilla_vidriera .vd-social a:hover { background: var(--vd-accent); border-color: var(--vd-accent); }
+#plantilla_vidriera .vd-social svg { width: 17px; height: 17px; fill: currentColor; }
+#plantilla_vidriera .vd-footer__copy { margin-top: 1.5rem; font-size: .82rem; color: #b7ab97; text-align: center; }
