@@ -18,9 +18,18 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'apellido',
+        'dni',
         'email',
+        'telefono',
+        'nombre_negocio',
         'password',
     ];
+
+    public function negocios()
+    {
+        return $this->hasMany(Product::class, 'user_id');
+    }
 
     /**
      * The attributes that should be hidden for arrays.
@@ -39,5 +48,6 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'es_admin' => 'boolean',
     ];
 }

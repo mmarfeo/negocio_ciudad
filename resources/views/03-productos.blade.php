@@ -1,5 +1,6 @@
+<?php $negocio = $products; ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
 
@@ -8,31 +9,38 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title id="favicon_nombre"></title>
-  <link rel="icon" type="image/x-icon" id="favicon_icon"/>
+  <title>{{ $negocio->nombre }}</title>
+  <link rel="icon" type="image/x-icon" href="{{ $propiedades->imagenUrl('favicon_logo') ?? asset('img/negocio.ico') }}"/>
 
   <!-- Bootstrap core CSS -->
-<!--   <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
- -->
-  <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
 
-  <!-- Custom styles for this template -->
-  <link href="css/03-productos/estilos.css" rel="stylesheet">
+  <!-- Google fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
 
+  <!-- Custom styles for this template -->
+  <link href="{{ asset('css/03-productos/estilos.css') }}" rel="stylesheet">
+  <link href="{{ asset('css/03-productos/negocios-overrides.css') }}" rel="stylesheet">
+
+  @if ($propiedades->estiloPersonalizado())
+    <style>{!! $propiedades->estiloPersonalizado() !!}</style>
+  @endif
 
 </head>
 
 <body id="plantilla_productos">
 
   <!-- Navigation -->
-  <!-- <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top"> -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-    
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+
     <div class="container">
-      
-      <a class="navbar-brand" href="#"><img id="nav_logo" height="40"></a>
-      <a  href="#"><h5 class="text-white" id="title_nombre"></h5></a>
+
+      <a class="navbar-brand" href="#">
+        @if ($propiedades->imagenUrl('nav_logo'))
+          <img height="40" src="{{ $propiedades->imagenUrl('nav_logo') }}" alt="{{ $negocio->nombre }}">
+        @endif
+      </a>
+      <a href="#"><h5 class="text-white">{{ $negocio->nombre }}</h5></a>
 
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -40,9 +48,7 @@
       <div class="collapse navbar-collapse" id="navbarResponsive">
         <ul class="navbar-nav ml-auto">
           <li class="nav-item">
-            <a class="nav-link active" href="#">Inicio
-              <!-- <span class="sr-only">(current)</span> -->
-            </a>
+            <a class="nav-link active" href="#">Inicio</a>
           </li>
           <li class="nav-item">
             <a class="nav-link active" href="#fila-2">Contacto</a>
@@ -52,177 +58,107 @@
     </div>
   </nav>
 
+  @php
+    // Solo se arman slides para las imágenes que realmente están cargadas --
+    // antes se imprimían siempre las 3 aunque estuvieran vacías, dejando el
+    // <img> con src="" (ícono roto) en la sección más visible de la página.
+    $slidesHeader = [];
+    for ($n = 1; $n <= 3; $n++) {
+      $imgHeader = $propiedades->imagenUrl("header_img_{$n}");
+      if ($imgHeader) {
+        $slidesHeader[] = [
+          'img' => $imgHeader,
+          'titulo' => $n === 1 ? $negocio->nombre : $propiedades->{"header_titulo_{$n}"},
+          'subtitulo' => $propiedades->{"header_subtitulo_{$n}"},
+        ];
+      }
+    }
+  @endphp
   <header>
-    <div id="carouselExampleIndicators" class="carousel slide mb-0" data-ride="carousel">
-      <ol class="carousel-indicators">
-        <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-        <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-        <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-      </ol>
-      <div class="carousel-inner">
-        <div class="carousel-item active">
-          <img class="d-block w-100" id="header_img_1" alt="First slide">
-          <div class="carousel-caption d-none d-md-block">
-            <h1 id="nombre"></h1>
-            <p id="header_subtitulo_1"></p>
-          </div>
-        </div>
-        <div class="carousel-item ">
-          <img class="d-block w-100" id="header_img_2"  alt="First slide">
-          <div class="carousel-caption d-none d-md-block">
-            <h1 id="header_titulo_2"></h1>
-            <p id="header_subtitulo_2"></p>
-          </div>
-        </div>
-        <div class="carousel-item ">
-          <img class="d-block w-100" id="header_img_3"  alt="First slide">
-          <div class="carousel-caption d-none d-md-block">
-            <h1 id="header_titulo_3"></h1>
-            <p id="header_subtitulo_3"></p>
-          </div>
+    @if (count($slidesHeader) > 0)
+      <div id="carouselExampleIndicators" class="carousel slide mb-0" data-ride="carousel">
+        @if (count($slidesHeader) > 1)
+          <ol class="carousel-indicators">
+            @foreach ($slidesHeader as $i => $slide)
+              <li data-target="#carouselExampleIndicators" data-slide-to="{{ $i }}" class="{{ $i === 0 ? 'active' : '' }}"></li>
+            @endforeach
+          </ol>
+        @endif
+        <div class="carousel-inner">
+          @foreach ($slidesHeader as $i => $slide)
+            <div class="carousel-item {{ $i === 0 ? 'active' : '' }}">
+              <img class="d-block w-100" src="{{ $slide['img'] }}" alt="{{ $negocio->nombre }}">
+              @if ($slide['titulo'] || $slide['subtitulo'])
+                <div class="carousel-caption d-none d-md-block">
+                  @if ($slide['titulo'])
+                    <h1>{{ $slide['titulo'] }}</h1>
+                  @endif
+                  @if ($slide['subtitulo'])
+                    <p>{{ $slide['subtitulo'] }}</p>
+                  @endif
+                </div>
+              @endif
+            </div>
+          @endforeach
         </div>
       </div>
-    </div>
+    @else
+      <div class="jumbotron text-center mb-0 rounded-0 bg-dark text-white py-5">
+        <h1 class="display-4">{{ $negocio->nombre }}</h1>
+        @if ($propiedades->header_subtitulo_1)
+          <p class="lead">{{ $propiedades->header_subtitulo_1 }}</p>
+        @endif
+      </div>
+    @endif
   </header>
   <!-- Page Content -->
   <div class="container">
 
-    <!-- Jumbotron Header -->
-<!--     <header class="jumbotron my-4"> -->
-
-
     <div class="jumbotron">
-      <center><h1 class="display-3" id="body_titulo"></h1> </center> 
-      <center><p class="lead" id="body_subtitulo"></p></center>
+      <center><h1 class="display-3">{{ $propiedades->body_titulo }}</h1></center>
+      <center><p class="lead">{{ $propiedades->body_subtitulo }}</p></center>
       <hr class="my-4" color="#fff">
 
-          <!-- Page Features -->
-    <div class="row text-center">
+      <!-- Page Features -->
+      <div class="row text-center">
 
-
-     
-      <div class="col-lg-3 col-md-6 mb-4">
-        <div class="card h-100">
-          <img class="card-img-top" id="body_tarjeta_img_1" alt="">
-          <div class="card-body">
-            <h4 class="card-title" id="body_tarjeta_titulo_1"></h4>
-            <p class="card-text" id="body_tarjeta_parrafo_1"></p>
-          </div>
-          <div class="card-footer">
-            <span class="badge badge-pill badge-primary" id="body_tarjeta_precio_1"></span>
-          </div>
-        </div>
+        @for ($n = 1; $n <= 8; $n++)
+          @php $titulo = $propiedades->{"body_tarjeta_titulo_{$n}"}; @endphp
+          @if ($titulo)
+            <div class="col-lg-3 col-md-6 mb-4">
+              <div class="card h-100">
+                <img class="card-img-top" src="{{ $propiedades->imagenUrl("body_tarjeta_img_{$n}") }}" alt="{{ $titulo }}">
+                <div class="card-body">
+                  <h4 class="card-title">{{ $titulo }}</h4>
+                  <p class="card-text">{{ $propiedades->{"body_tarjeta_parrafo_{$n}"} }}</p>
+                </div>
+                @if ($propiedades->{"body_tarjeta_precio_{$n}"})
+                  <div class="card-footer">
+                    <span class="badge badge-pill badge-primary">$ {{ $propiedades->{"body_tarjeta_precio_{$n}"} }}</span>
+                  </div>
+                @endif
+              </div>
+            </div>
+          @endif
+        @endfor
       </div>
 
-      <div class="col-lg-3 col-md-6 mb-4">
-        <div class="card h-100">
-          <img class="card-img-top" id="body_tarjeta_img_2" alt="">
-          <div class="card-body">
-            <h4 class="card-title" id="body_tarjeta_titulo_2"></h4>
-            <p class="card-text" id="body_tarjeta_parrafo_2"></p>
-          </div>
-          <div class="card-footer">
-            <span class="badge badge-pill badge-primary" id="body_tarjeta_precio_2"></span>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-lg-3 col-md-6 mb-4">
-        <div class="card h-100">
-          <img class="card-img-top" id="body_tarjeta_img_3" alt="">
-          <div class="card-body">
-            <h4 class="card-title" id="body_tarjeta_titulo_3"></h4>
-            <p class="card-text" id="body_tarjeta_parrafo_3"></p>
-          </div>
-          <div class="card-footer">
-            <span class="badge badge-pill badge-primary" id="body_tarjeta_precio_3"></span>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-lg-3 col-md-6 mb-4">
-        <div class="card h-100">
-          <img class="card-img-top" id="body_tarjeta_img_4" alt="">
-          <div class="card-body">
-            <h4 class="card-title" id="body_tarjeta_titulo_4"></h4>
-            <p class="card-text" id="body_tarjeta_parrafo_4"></p>
-          </div>
-          <div class="card-footer">
-            <span class="badge badge-pill badge-primary" id="body_tarjeta_precio_4"></span>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-lg-3 col-md-6 mb-4">
-        <div class="card h-100">
-          <img class="card-img-top" id="body_tarjeta_img_5" alt="">
-          <div class="card-body">
-            <h4 class="card-title" id="body_tarjeta_titulo_5"></h4>
-            <p class="card-text" id="body_tarjeta_parrafo_5"></p>
-          </div>
-          <div class="card-footer">
-            <span class="badge badge-pill badge-primary" id="body_tarjeta_precio_5"></span>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-lg-3 col-md-6 mb-4">
-        <div class="card h-100">
-          <img class="card-img-top" id="body_tarjeta_img_6" alt="">
-          <div class="card-body">
-            <h4 class="card-title" id="body_tarjeta_titulo_6"></h4>
-            <p class="card-text" id="body_tarjeta_parrafo_6"></p>
-          </div>
-          <div class="card-footer">
-            <span class="badge badge-pill badge-primary" id="body_tarjeta_precio_6"></span>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-lg-3 col-md-6 mb-4">
-        <div class="card h-100">
-          <img class="card-img-top" id="body_tarjeta_img_7" alt="">
-          <div class="card-body">
-            <h4 class="card-title" id="body_tarjeta_titulo_7"></h4>
-            <p class="card-text" id="body_tarjeta_parrafo_7"></p>
-          </div>
-          <div class="card-footer">
-            <span class="badge badge-pill badge-primary" id="body_tarjeta_precio_7"></span>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-lg-3 col-md-6 mb-4">
-        <div class="card h-100">
-          <img class="card-img-top" id="body_tarjeta_img_8" alt="">
-          <div class="card-body">
-            <h4 class="card-title" id="body_tarjeta_titulo_8"></h4>
-            <p class="card-text" id="body_tarjeta_parrafo_8"></p>
-          </div>
-          <div class="card-footer">
-            <span class="badge badge-pill badge-primary" id="body_tarjeta_precio_8"></span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <center>
-      <h3 class="lead" id="medios_pago">
-        Medios de pago
-      </h3>
-      <p id="body_tipos_medios_pago">
-
-      </p>
-    </center>
-    
+      @if ($propiedades->body_tipos_medios_pago)
+        <center>
+          <h3 class="lead">Medios de pago</h3>
+          <p>{{ $propiedades->body_tipos_medios_pago }}</p>
+        </center>
+      @endif
 
     </div>
   </div>
   <!-- /.container -->
 
-  <div class="col" id="col-maps">
-    <iframe id="body_maps" src="" width="100%" height="450" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
-  </div>
+  @if ($propiedades->body_maps)
+    <div class="col" id="col-maps">
+      <iframe src="{{ $propiedades->body_maps }}" width="100%" height="450" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
+    </div>
+  @endif
 
   <footer class="py-5 bg-dark">
     <div class="footer-contenedor">
@@ -230,171 +166,42 @@
 
         <div class="contenedor-redes col-12 col-sm-12 col-md-12 col-lg-4 offset-lg-4 align-self-center">
           <h4><center>Redes sociales</center></h4>
-          <div id="social-media" class="social-media">
+          <div class="social-media">
             <center>
-            </center>      
+              @if ($propiedades->footer_redes_facebook)
+                <a href="{{ $propiedades->footer_redes_facebook }}" target="_blank" class="redes"><i class="fab fa-facebook-f fa-lg"></i></a>
+              @endif
+              @if ($propiedades->footer_redes_instagram)
+                <a href="{{ $propiedades->footer_redes_instagram }}" target="_blank" class="redes"><i class="fab fa-instagram fa-lg"></i></a>
+              @endif
+              @if ($propiedades->footer_redes_twitter)
+                <a href="{{ $propiedades->footer_redes_twitter }}" target="_blank" class="redes"><i class="fab fa-twitter fa-lg"></i></a>
+              @endif
+              @if ($propiedades->footer_redes_youtube)
+                <a href="{{ $propiedades->footer_redes_youtube }}" target="_blank" class="redes"><i class="fab fa-youtube fa-lg"></i></a>
+              @endif
+              @if ($propiedades->footer_redes_linkedin)
+                <a href="{{ $propiedades->footer_redes_linkedin }}" target="_blank" class="redes"><i class="fab fa-linkedin fa-lg"></i></a>
+              @endif
+            </center>
           </div>
           <hr/>
+        </div>
       </div>
-    </div>
       <div class="row" id="fila-2">
         <div class="col-12 col-sm-12 col-md-12 col-lg-6 offset-lg-3 align-self-center">
           <center>
-            <h6 id="footer_info_negocio"></h6>
-            <h6 id="footer-email"></h6>
+            <h6>{{ $negocio->direccion }} - {{ $negocio->telefono }}</h6>
+            <h6>{{ $negocio->email }}</h6>
           </center>
         </div>
       </div>
-   
-  </footer>
 
+  </footer>
 
   <!-- jQuery and Bootstrap Bundle (includes Popper) -->
   <script src="https://kit.fontawesome.com/c15b744a04.js" crossorigin="anonymous"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
-  <script src="../../js/config.js"></script>
-	<script src="../../js/funciones.js"></script>
-
-
-  <script>
-
-  /* aca estoy convirtiendo una variable de php a js y esa variable la estoy usando en la vista */
-    let negocio = @json($products);
-    let propiedades = @json($propiedades);
-
-      $('#favicon_nombre').html(negocio.nombre);
-      $('#title_nombre').html(negocio.nombre);
-      $('#nombre').html(negocio.nombre);
-      $('#telefono').html(negocio.telefono);
-      $('#footer_info_negocio').html(`${negocio.direccion} - ${negocio.telefono} `);
-      $('#footer-email').html(negocio.email);
-
-
-      let ruta_img = "img/03-productos/" + negocio.slug + "/"
-
-      /* favicon */
-      $('#favicon_icon').prop("href",  ruta_img + propiedades.favicon_logo);
-
-      /* variables para el nav */
-       if(propiedades.nav_logo == null || propiedades.nav_logo == "" ){ 
-          $('#nav_logo').prop("src",  "img/logo.png");
-       }else{
-          $('#nav_logo').prop("src",  ruta_img + propiedades.nav_logo);
-       }
-
- 
-       /* variables para el header */
-       $('#header_img_1').prop("src",  ruta_img + propiedades.header_img_1);
-       $('#header_subtitulo_1').html(propiedades.header_subtitulo_1);
-
-       $('#header_img_2').prop("src",  ruta_img + propiedades.header_img_2);
-       $('#header_titulo_2').html(propiedades.header_titulo_2);
-       $('#header_subtitulo_2').html(propiedades.header_subtitulo_2);
-
-       $('#header_img_3').prop("src",  ruta_img + propiedades.header_img_3);
-       $('#header_titulo_3').html(propiedades.header_titulo_3);
-       $('#header_subtitulo_3').html(propiedades.header_subtitulo_3);
-
-       /* variables para el body*/
-       $('#body_titulo').html(propiedades.body_titulo);
-       $('#body_subtitulo').html(propiedades.body_subtitulo);
-
-       /* variables para las tarjetas del body*/
-       $('#body_tarjeta_img_1').prop("src",  ruta_img + propiedades.body_tarjeta_img_1);
-       $('#body_tarjeta_titulo_1').html(propiedades.body_tarjeta_titulo_1);
-       $('#body_tarjeta_parrafo_1').html(propiedades.body_tarjeta_parrafo_1);
-       $('#body_tarjeta_precio_1').html("$ " + propiedades.body_tarjeta_precio_1);
-
-       $('#body_tarjeta_img_2').prop("src",  ruta_img + propiedades.body_tarjeta_img_2);
-       $('#body_tarjeta_titulo_2').html(propiedades.body_tarjeta_titulo_2);
-       $('#body_tarjeta_parrafo_2').html(propiedades.body_tarjeta_parrafo_2);
-       $('#body_tarjeta_precio_2').html("$ " + propiedades.body_tarjeta_precio_2);
-
-       $('#body_tarjeta_img_3').prop("src",  ruta_img + propiedades.body_tarjeta_img_3);
-       $('#body_tarjeta_titulo_3').html(propiedades.body_tarjeta_titulo_3);
-       $('#body_tarjeta_parrafo_3').html(propiedades.body_tarjeta_parrafo_3);
-       $('#body_tarjeta_precio_3').html("$ " + propiedades.body_tarjeta_precio_3);
-
-       $('#body_tarjeta_img_4').prop("src",  ruta_img + propiedades.body_tarjeta_img_4);
-       $('#body_tarjeta_titulo_4').html(propiedades.body_tarjeta_titulo_4);
-       $('#body_tarjeta_parrafo_4').html(propiedades.body_tarjeta_parrafo_4);
-       $('#body_tarjeta_precio_4').html("$ " + propiedades.body_tarjeta_precio_4);
-
-       $('#body_tarjeta_img_5').prop("src",  ruta_img + propiedades.body_tarjeta_img_5);
-       $('#body_tarjeta_titulo_5').html(propiedades.body_tarjeta_titulo_5);
-       $('#body_tarjeta_parrafo_5').html(propiedades.body_tarjeta_parrafo_5);
-       $('#body_tarjeta_precio_5').html("$ " + propiedades.body_tarjeta_precio_5);
-
-       $('#body_tarjeta_img_6').prop("src",  ruta_img + propiedades.body_tarjeta_img_6);
-       $('#body_tarjeta_titulo_6').html(propiedades.body_tarjeta_titulo_6);
-       $('#body_tarjeta_parrafo_6').html(propiedades.body_tarjeta_parrafo_6);
-       $('#body_tarjeta_precio_6').html("$ " + propiedades.body_tarjeta_precio_6);
-
-       $('#body_tarjeta_img_7').prop("src",  ruta_img + propiedades.body_tarjeta_img_7);
-       $('#body_tarjeta_titulo_7').html(propiedades.body_tarjeta_titulo_7);
-       $('#body_tarjeta_parrafo_7').html(propiedades.body_tarjeta_parrafo_7);
-       $('#body_tarjeta_precio_7').html("$ " + propiedades.body_tarjeta_precio_7);
-
-       $('#body_tarjeta_img_8').prop("src",  ruta_img + propiedades.body_tarjeta_img_8);
-       $('#body_tarjeta_titulo_8').html(propiedades.body_tarjeta_titulo_8);
-       $('#body_tarjeta_parrafo_8').html(propiedades.body_tarjeta_parrafo_8);
-       
-       if(propiedades.body_tarjeta_precio_8 == null){ 
-          $('#body_tarjeta_precio_8').remove('span');
-       }else{
-          $('#body_tarjeta_precio_8').html("$ " + propiedades.body_tarjeta_precio_8);
-      }
-
-      /* Medios de pago*/
-      if(propiedades.body_tipos_medios_pago == null ){ 
-          $('#medios_pago').remove('#medios_pago');
-       }else{
-          $('#body_tipos_medios_pago').html(propiedades.body_tipos_medios_pago);
-      }
-
-       /* variables para google maps*/
-       let estilos_map= "width='100%' height='450' frameborder='0' style='border:0;' allowfullscreen='' aria-hidden='false' tabindex='0'"
-       $('#body_maps').prop("src", propiedades.body_maps + ' ' + estilos_map);
-
-       /* variables para el footer */
-      
-       if(propiedades.footer_redes_facebook == null){ 
-          $('#footer_redes_facebook').remove('#footer_redes_facebook');
-       }else{
-          $('#social-media').append("<a id='footer_redes_facebook' target='_blank' class='redes'> <i  class='fab fa-facebook-f fa-lg'></i> </a>");
-          $('#footer_redes_facebook').prop("href", propiedades.footer_redes_facebook);
-      }
-
-      if(propiedades.footer_redes_instagram == null){ 
-          $('#footer_redes_instagram').remove('#footer_redes_instagram');
-       }else{
-          $('#social-media').append("<a id='footer_redes_instagram' target='_blank' class='redes'> <i  class='fab fa-instagram fa-lg'></i> </a>");
-          $('#footer_redes_instagram').prop("href", propiedades.footer_redes_instagram);
-      }
-
-      if(propiedades.footer_redes_twitter == null){ 
-          $('#footer_redes_twitter').remove('#footer_redes_twitter');
-       }else{
-          $('#social-media').append("<a id='footer_redes_twitter' target='_blank' class='redes'> <i  class='fab fa-twitter fa-lg'></i> </a>");
-          $('#footer_redes_twitter').prop("href", propiedades.footer_redes_twitter);
-      }
-       
-      if(propiedades.footer_redes_youtube == null){ 
-          $('#footer_redes_youtube').remove('#footer_redes_youtube');
-       }else{
-          $('#social-media').append("<a id='footer_redes_youtube' target='_blank' class='redes'> <i  class='fab fa-youtube fa-lg'></i> </a>");
-          $('#footer_redes_youtube').prop("href", propiedades.footer_redes_youtube);
-      }
-
-      if(propiedades.footer_redes_linkedin == null){ 
-          $('#footer_redes_linkedin').remove('#footer_redes_youtube');
-       }else{
-          $('#social-media').append("<a id='footer_redes_linkedin' target='_blank' class='redes'> <i  class='fab fa-linkedin fa-lg'></i> </a>");
-          $('#footer_redes_linkedin').prop("href", propiedades.footer_redes_linkedin);
-      }
-    
-  </script>
 
 </body>
 

@@ -37,7 +37,7 @@
 		<!-- Banner -->
 			<section id="banner">
 				<!-- <i class="icon fa-diamond"></i> -->
-                <img class="presentacion" src="img/01-misia_paula/Logo-misia-paula.png" alt="">
+                <img class="presentacion" src="img/01-misia_paula/Logo-Misia-Paula.png" alt="">
 				<h2 id="header_titulo"></h2>
 				<p>Panaderia y Confiteria</p>
 				<ul class="actions">
@@ -168,14 +168,14 @@
 
 		<!-- Scripts -->
 			<!-- <script src="js/01-misia_paula/01-misia_paula/jquery.min.js"></script> -->
-			<script src="../../public/js/01-misia_paula/jquery.min.js"></script>
-			<script src="../../public/js/01-misia_paula/01-misia_paula/skel.min.js"></script>
-			<script src="../../public/js/01-misia_paula/util.js"></script>
-			<script src="../../public/js/01-misia_paula/main.js"></script>
+			<script src="js/01-misia_paula/jquery.min.js"></script>
+			<script src="js/01-misia_paula/skel.min.js"></script>
+			<script src="js/01-misia_paula/util.js"></script>
+			<script src="js/01-misia_paula/main.js"></script>
 			<!--[if lte IE 8]><script src="assets/js/01-misia_paula/ie/respond.min.js"></script><![endif]-->			
 
-			<script src="../../js/01-misia_paula/config.js"></script>
-			<script src="../../js/01-misia_paula/funciones.js"></script>
+		<!--	<script src="../../js/01-misia_paula/config.js"></script>
+			<script src="../../js/01-misia_paula/funciones.js"></script>-->
 
 	</body>
 </html>

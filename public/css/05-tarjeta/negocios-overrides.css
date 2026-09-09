@@ -1,0 +1,18 @@
+/* Fase 5, Paso 1: tipografía unificada con el resto del sitio (app.css usa
+   Poppins para títulos, Inter para texto). Se pisa acá en vez de editar
+   styles.css directo -- ese archivo es el bundle completo de Bootstrap
+   vendorizado, no vale la pena tocarlo a mano. */
+:root {
+  --font-family-sans-serif: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6,
+.page-section-heading,
+.card-title {
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-weight: 600;
+}
