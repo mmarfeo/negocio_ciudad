@@ -1,62 +1,107 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+# negociosentuciudad.com
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Plataforma multi-negocio: cada negocio elige una **plantilla** (`plantilla_id`) y
+su página se sirve en `/{ciudad}/{slug}`. Incluye alta guiada por chat IA
+(Gemini), directorio + buscador cruzado, personalización visual y una plantilla
+de e-commerce ("Tienda", id 11) con Mercado Pago Connect.
 
-## About Laravel
+- **Framework:** Laravel 8 · PHP 7.3/8.0 · MySQL
+- **Hosting:** Hostinger (compartido)
+- **Repo:** github.com/mmarfeo/negocio_ciudad
+- **Roadmap / historial:** `../../documentos/` (fases 4–8, checklist general,
+  plan maestro v2)
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Estructura de deploy (IMPORTANTE)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+En Hostinger el dominio se sirve desde **dos carpetas hermanas** dentro de
+`negociosentuciudad.com/`:
 
-## Learning Laravel
+```
+negociosentuciudad.com/
+├── public_html/          <- lo que sirve Apache (webroot del dominio)
+│   ├── index.php         <- shim: require '../negocio_ciudad/vendor/autoload.php'
+│   │                        y '../negocio_ciudad/bootstrap/app.php'
+│   ├── .htaccess
+│   ├── css/ js/ fonts/ img/ ...   <- assets, se suben A MANO por FTP
+│   └── storage/          <- destino de PUBLIC_STORAGE_PATH (ver abajo)
+└── negocio_ciudad/       <- la app Laravel (este repo)
+    ├── app/ config/ routes/ resources/ database/ ...
+    ├── public/           <- NO es el webroot en producción (sí en local)
+    └── vendor/
+```
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+- **En producción** el webroot es `public_html/`, no `negocio_ciudad/public/`.
+  El `public_html/index.php` es un `index.php` de Laravel modificado que apunta
+  "de costado" a `../negocio_ciudad`.
+- **En local** el webroot sí es `negocio_ciudad/public/` (Laravel estándar).
+- La carpeta `negociosentuciudad.com - copia/` (un nivel más arriba) es un
+  **snapshot viejo con `.env` de credenciales reales** — está para archivar, no
+  se usa. Ver Fase 8, Bloque A.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### Deploy de código
 
-## Laravel Sponsors
+`negocio_ciudad/` es el repo. Subir los cambios de `app/`, `config/`, `routes/`,
+`resources/`, `database/` a `negocio_ciudad/` en el hosting. Correr migraciones
+(o los `.sql` de `database/sql/` en phpMyAdmin — las tablas `negocios` y
+`plantillas_propiedades` se crearon a mano, ver Fase 8 Bloque C).
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+### Deploy de assets (CSS/JS/imágenes de plantillas)
 
-### Premium Partners
+Los archivos de `negocio_ciudad/public/css|js|fonts|img|webfonts/` **se copian a
+mano a `public_html/`** (mismas subcarpetas). El build de Mix
+(`public/css/app.css`, `public/js/app.js`) también. Es la causa histórica de
+"subí el cambio y no se ve": se editó en `negocio_ciudad/public/` pero no se
+copió a `public_html/`.
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
+### Archivos subidos por la app (logos, fotos de producto)
 
-## Contributing
+- Disco `public` de Laravel → configurado por **`PUBLIC_STORAGE_PATH`** en el
+  `.env` de producción: ruta absoluta a `public_html/storage`
+  (ej. `/home/u374453216/domains/negociosentuciudad.com/public_html/storage`).
+  Sin esa variable cae a `public_path('storage')`, que en producción el dominio
+  no sirve → 404. Ver `config/filesystems.php`.
+- **Fase 8 Bloque B:** migrar este disco a S3-compatible (Cloudflare R2 /
+  Backblaze B2) para eliminar de raíz este problema.
+- Tras cambiar el `.env` en producción: `php artisan config:clear`.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+---
 
-## Code of Conduct
+## Setup local
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```bash
+composer install
+cp .env.example .env
+php artisan key:generate
+# .env local: DB_DATABASE=negocio_ciudad_dev  (crearla)  ·  APP_URL=http://localhost:8000
+php artisan migrate
+php artisan storage:link
+npm install && npm run dev
 
-## Security Vulnerabilities
+# servir (php artisan serve no sirve estáticos bien en Windows/Git Bash):
+php -S localhost:8000 -t public server.php
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Variables de entorno relevantes (ver `.env.example`): `GEMINI_API_KEY` (chat de
+alta), `MERCADOPAGO_CLIENT_ID/SECRET/WEBHOOK_SECRET` + `MERCADOPAGO_COMISION_PORCENTAJE`
+(marketplace plantilla Tienda), `PUBLIC_STORAGE_PATH` (solo producción).
 
-## License
+---
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## Mapa rápido del código
+
+| Ruta | Qué es |
+|---|---|
+| `routes/web.php` | Todas las rutas. `/{ciudad}/{slug}` (catch-all) → `ProductController::InfoPlantilla` |
+| `config/plantillas.php` | **Fuente única de plantillas** (id → label, vista, descripción, pasos). La consumen `ProductController`, `NegocioAdminController`, `ChatController` vía `App\Support\Plantillas` |
+| `app/Http/Controllers/ProductController.php` | Index + directorio + buscador + render de página pública por plantilla |
+| `app/Http/Controllers/NegocioAdminController.php` | Alta/edición manual de negocio + propiedades de plantilla |
+| `app/Http/Controllers/ChatController.php` | Alta guiada por chat (Gemini) + vista previa en vivo |
+| `app/Http/Controllers/TiendaController.php` | Catálogo/carrito/checkout de la plantilla Tienda (id 11) |
+| `app/Http/Controllers/MercadoPago*Controller.php` | OAuth Connect por negocio + webhook de pago |
+| `app/Services/` | `GeminiClient`, `NegocioWriter` (persistencia), `MercadoPagoService`, `GaleriaFotos` |
+| `app/Models/Product.php` | El "negocio" (tabla `negocios`, nombre histórico) |
+| `app/Models/propiedades_plantillas.php` | Contenido editable por negocio (tabla `plantillas_propiedades`) |
+| `resources/views/0N-*.blade.php`, `1N-*.blade.php` | Una vista por plantilla |
+| `database/sql/` | Equivalentes manuales de migraciones para phpMyAdmin de Hostinger |
