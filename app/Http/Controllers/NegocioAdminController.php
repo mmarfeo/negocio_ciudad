@@ -8,6 +8,7 @@ use App\Services\GaleriaFotos;
 use App\Services\GeminiClient;
 use App\Services\MercadoPagoService;
 use App\Services\NegocioWriter;
+use App\Support\Plantillas;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
@@ -54,14 +55,9 @@ class NegocioAdminController extends Controller
         'body_parrafo_4' => 'Redactá un párrafo breve de "sobre nosotros" para la página de este negocio.',
     ];
 
-    public const PLANTILLAS_DISPONIBLES = [
-        2 => 'Independiente (portfolio)',
-        3 => 'Productos',
-        4 => 'Servicios',
-        5 => 'Tarjeta',
-        10 => 'Vidriera (gastronomía con foto y precio)',
-        11 => 'Tienda (carrito y cobro con Mercado Pago)',
-    ];
+    // Las plantillas ofrecidas viven en config/plantillas.php (fuente única,
+    // ver App\Support\Plantillas). Antes había acá una constante
+    // PLANTILLAS_DISPONIBLES que ChatController también importaba.
 
     public const CAMPOS_IMAGEN = [
         'favicon_logo', 'nav_logo', 'header_img_1', 'header_img_2', 'header_img_3',
@@ -95,7 +91,7 @@ class NegocioAdminController extends Controller
         return view('admin.negocio_form', [
             'negocio' => new Product(),
             'propiedades' => new propiedades_plantillas(),
-            'plantillas' => self::PLANTILLAS_DISPONIBLES,
+            'plantillas' => Plantillas::disponibles(),
             'productosActuales' => [],
             'mercadoPagoConectado' => false,
         ]);
@@ -115,7 +111,7 @@ class NegocioAdminController extends Controller
         return view('admin.negocio_form', [
             'negocio' => $negocio,
             'propiedades' => $negocio->propiedades ?? new propiedades_plantillas(),
-            'plantillas' => self::PLANTILLAS_DISPONIBLES,
+            'plantillas' => Plantillas::disponibles(),
             'productosActuales' => $negocio->productos->map(fn ($p) => [
                 'nombre' => $p->nombre,
                 'precio' => $p->pivot->precio,
@@ -166,7 +162,7 @@ class NegocioAdminController extends Controller
                     ->where(fn ($query) => $query->where('ciudad_slug', $ciudadSlug))
                     ->ignore($negocio->id),
             ],
-            'plantilla_id' => ['required', Rule::in(array_keys(self::PLANTILLAS_DISPONIBLES))],
+            'plantilla_id' => ['required', Rule::in(array_keys(Plantillas::disponibles()))],
             'profesion' => 'nullable|string',
             'cuit' => 'nullable|string',
             'telefono' => 'nullable|string',

@@ -7,6 +7,7 @@ use App\Models\Product;
 use App\Models\propiedades_plantillas;
 use App\Services\GeminiClient;
 use App\Services\NegocioWriter;
+use App\Support\Plantillas;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -103,30 +104,10 @@ class ChatController extends Controller
         'verde' => ['label' => 'Verde', 'fondo' => '#f0f7f0', 'texto' => '#1b4332'],
     ];
 
-    /**
-     * Bajada de una línea de cada plantilla para el paso "plantilla" del
-     * chat. Los id/nombres vienen de NegocioAdminController::PLANTILLAS_DISPONIBLES
-     * (fuente única) -- esto solo agrega la descripción corta que ayuda a
-     * elegir sin haber visto ninguna plantilla todavía.
-     */
-    private const PLANTILLAS_DESCRIPCION = [
-        2 => 'Portfolio creativo: fotografía, diseño, oficios de imagen',
-        3 => 'Venta de productos: comida, indumentaria, kioscos',
-        4 => 'Oficios y profesionales: gasista, contador, salud',
-        5 => 'Tarjeta simple: solo contacto y ubicación',
-        10 => 'Vidriera: gastronomía artesanal, carta con foto y precio',
-        11 => 'Tienda: catálogo con carrito y cobro online',
-    ];
-
-    /** Vista Blade de cada plantilla ofrecida, para la vista previa en vivo. */
-    private const VISTA_POR_PLANTILLA = [
-        2 => '02-independiente',
-        3 => '03-productos',
-        4 => '04-servicios',
-        5 => '05-tarjeta',
-        10 => '10-vidriera',
-        11 => '11-tienda',
-    ];
+    // Las plantillas (id, label, descripción, vista, pasos a saltear) viven
+    // en config/plantillas.php -- fuente única, ver App\Support\Plantillas.
+    // Antes acá había PLANTILLAS_DESCRIPCION + VISTA_POR_PLANTILLA, y el
+    // label salía de NegocioAdminController::PLANTILLAS_DISPONIBLES.
 
     private $gemini;
     private $writer;
@@ -149,12 +130,13 @@ class ChatController extends Controller
             'productos' => [],
         ]);
 
+        $descripciones = Plantillas::descripciones();
         $plantillas = [];
-        foreach (NegocioAdminController::PLANTILLAS_DISPONIBLES as $id => $label) {
+        foreach (Plantillas::disponibles() as $id => $label) {
             $plantillas[] = [
                 'id' => $id,
                 'label' => $label,
-                'descripcion' => self::PLANTILLAS_DESCRIPCION[$id] ?? '',
+                'descripcion' => $descripciones[$id] ?? '',
             ];
         }
 
@@ -265,7 +247,7 @@ class ChatController extends Controller
     {
         $plantillaId = (int) trim($mensaje);
 
-        if (! array_key_exists($plantillaId, NegocioAdminController::PLANTILLAS_DISPONIBLES)) {
+        if (! Plantillas::esDisponible($plantillaId)) {
             return response()->json([
                 'respuesta' => 'Elegí una de las opciones para continuar 🙂',
                 'paso' => 'plantilla',
@@ -547,19 +529,15 @@ class ChatController extends Controller
     }
 
     /**
-     * Pasos que no aplican según la plantilla elegida en el paso 1 -- hoy
-     * solo "productos": la plantilla Tarjeta (id 5) es "solo contacto y
-     * ubicación" y su vista no muestra ningún producto/servicio cargado.
+     * Pasos que no aplican según la plantilla elegida en el paso 1 -- la
+     * lista `saltea_pasos` de cada plantilla vive en config/plantillas.php
+     * (ej. Tarjeta saltea "productos": su vista no los muestra).
      */
     private function debeSaltearPaso(string $paso, OnboardingSesion $sesion): bool
     {
-        if ($paso === 'productos') {
-            $plantillaId = (int) ($sesion->datos['plantilla_id'] ?? 0);
+        $plantillaId = (int) ($sesion->datos['plantilla_id'] ?? 0);
 
-            return $plantillaId === 5;
-        }
-
-        return false;
+        return Plantillas::salteaPaso($plantillaId, $paso);
     }
 
     private function resumen(OnboardingSesion $sesion): string
@@ -688,13 +666,11 @@ class ChatController extends Controller
         $d = $sesion->datos ?? [];
 
         $plantillaId = $plantillaIdOverride ?? (int) ($d['plantilla_id'] ?? 3);
-        // Antes era una lista [2, 3, 4, 5] a mano -- se quedó afuera la
-        // plantilla 10 (Vidriera) al agregarla, y esto pisaba en silencio
-        // cualquier plantilla_id que no estuviera en esa lista, tanto en la
-        // preview como al confirmar/publicar de verdad. Usa la misma fuente
-        // única que ya valida procesarPasoPlantilla() para que no vuelva a
-        // pasar si se agrega una plantilla nueva.
-        if (! array_key_exists($plantillaId, NegocioAdminController::PLANTILLAS_DISPONIBLES)) {
+        // Cae a "Productos" (3) si el id no es una plantilla ofrecida --
+        // misma fuente única (config/plantillas.php) que valida
+        // procesarPasoPlantilla(), así no se pisa en silencio una plantilla
+        // nueva ni en la preview ni al publicar.
+        if (! Plantillas::esDisponible($plantillaId)) {
             $plantillaId = 3;
         }
 
@@ -731,10 +707,11 @@ class ChatController extends Controller
 
         $productos = $sesion->productos ?? [];
 
-        // Si la plantilla es "Productos", además de cargar el catálogo
-        // buscable (Fase 2), llenamos las primeras tarjetas visuales de
-        // la página con lo mismo, para no pedir el dato dos veces.
-        if ($plantillaId === 3) {
+        // Plantillas con `tarjetas_desde_productos` (hoy solo "Productos"):
+        // además de cargar el catálogo buscable (Fase 2), llenamos las
+        // primeras tarjetas visuales de la página con lo mismo, para no
+        // pedir el dato dos veces.
+        if (Plantillas::tarjetasDesdeProductos($plantillaId)) {
             foreach (array_slice($productos, 0, 8) as $indice => $producto) {
                 $n = $indice + 1;
                 $datosPropiedades["body_tarjeta_titulo_{$n}"] = $producto['nombre'];
@@ -787,8 +764,9 @@ class ChatController extends Controller
         ));
 
         // Sin productos cargados todavía, un par de ejemplo para que la
-        // plantilla "Productos" no se vea vacía.
-        if ($plantillaId === 3 && empty($productos)) {
+        // plantilla no se vea vacía (solo las que arman tarjetas desde
+        // productos, hoy "Productos").
+        if (Plantillas::tarjetasDesdeProductos($plantillaId) && empty($productos)) {
             foreach ([['nombre' => 'Producto de ejemplo', 'precio' => 1000], ['nombre' => 'Otro producto', 'precio' => 2500]] as $indice => $producto) {
                 $n = $indice + 1;
                 $propiedades->{"body_tarjeta_titulo_{$n}"} = $producto['nombre'];
@@ -796,7 +774,7 @@ class ChatController extends Controller
             }
         }
 
-        $vista = self::VISTA_POR_PLANTILLA[$plantillaId] ?? '03-productos';
+        $vista = Plantillas::vista($plantillaId) ?? '03-productos';
 
         // La plantilla "Tienda" arma su catálogo consultando la base real
         // (negocio->productos()), que durante la preview siempre está vacía
