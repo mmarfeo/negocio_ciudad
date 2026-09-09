@@ -9,7 +9,7 @@
 <!--     Este link es para el icono en el title, es necesario .ico y el rel y type, tal como esta aca -->
     <link rel="shortcut icon" type="image/x-icon"  href="img/08-Pizza-Nico/icon-logo-pizza.ico" >
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="css/08-Pizza-Nico/estilos.css">
+    <link rel="stylesheet" href="css/08-pizza-nico/estilos.css">
 
 </head>
 
