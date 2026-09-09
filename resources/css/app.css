@@ -1,0 +1,468 @@
+/* =====================================================================
+   Sistema de diseño compartido — Negocios en tu Ciudad
+   Compilado por Laravel Mix a public/css/app.css (npm run production).
+   Usado por: index, planes y el chat de alta con Gemini.
+   Convive con Bootstrap 4 (se carga después, así puede pisar colores de
+   componentes de Bootstrap como .btn-primary sin tocar el CDN).
+   ===================================================================== */
+
+:root {
+    /* Marca (mismo navy de siempre) */
+    --color-primary: #003245;
+    --color-primary-600: #04435c;
+    --color-primary-50: #eaf2f5;
+    --color-on-primary: #ffffff;
+
+    /* Acento cálido para CTAs, contrasta contra el navy */
+    --color-accent: #ff6b4a;
+    --color-accent-dark: #e14f30;
+
+    /* Superficie / texto */
+    --color-bg: #f5f7fa;
+    --color-surface: #ffffff;
+    --color-text: #1f2937;
+    --color-text-muted: #64748b;
+    --color-border: #e5e9f0;
+
+    /* Tipografía */
+    --font-heading: 'Poppins', 'Segoe UI', sans-serif;
+    --font-body: 'Inter', 'Segoe UI', sans-serif;
+
+    /* Espaciado */
+    --spacing-xs: 0.35rem;
+    --spacing-sm: 0.75rem;
+    --spacing-md: 1.25rem;
+    --spacing-lg: 2.5rem;
+    --spacing-xl: 4rem;
+
+    /* Bordes / sombras */
+    --radius-sm: 10px;
+    --radius-md: 16px;
+    --radius-lg: 24px;
+    --radius-pill: 999px;
+    --shadow-sm: 0 1px 2px rgba(15, 23, 42, .06), 0 1px 3px rgba(15, 23, 42, .08);
+    --shadow-md: 0 12px 28px -10px rgba(15, 23, 42, .22);
+    --shadow-lg: 0 24px 48px -16px rgba(15, 23, 42, .3);
+
+    --avatar-size: 96px;
+}
+
+/* ---------- Base ---------- */
+body {
+    font-family: var(--font-body);
+    color: var(--color-text);
+    background-color: var(--color-bg);
+}
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    font-weight: 600;
+}
+a {
+    transition: color .15s ease-in-out;
+}
+:focus-visible {
+    outline: 3px solid var(--color-accent);
+    outline-offset: 2px;
+}
+
+/* Re-skin de botones de Bootstrap con los colores de marca, sin tocar
+   el bundle de Bootstrap. */
+.btn {
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    padding: .6rem 1.4rem;
+}
+.btn-primary,
+.btn-primary:hover,
+.btn-primary:focus {
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+}
+.btn-primary:hover {
+    background-color: var(--color-primary-600);
+    border-color: var(--color-primary-600);
+}
+.btn-accent {
+    background-color: var(--color-accent);
+    border-color: var(--color-accent);
+    color: #fff;
+}
+.btn-accent:hover {
+    background-color: var(--color-accent-dark);
+    border-color: var(--color-accent-dark);
+    color: #fff;
+}
+.btn-outline-info {
+    color: var(--color-primary);
+    border-color: var(--color-primary);
+}
+.btn-outline-info:hover {
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+}
+.btn-light {
+    border-radius: var(--radius-pill);
+}
+
+/* =====================================================================
+   Index — hero, buscador, grid de negocios
+   ===================================================================== */
+
+.nc-navbar {
+    padding-top: var(--spacing-sm);
+    padding-bottom: var(--spacing-sm);
+}
+.nc-navbar .nav-link {
+    color: rgba(255, 255, 255, .85) !important;
+    font-weight: 500;
+}
+.nc-navbar .nav-link:hover {
+    color: #fff !important;
+}
+
+.nc-hero {
+    background: linear-gradient(160deg, var(--color-primary) 0%, var(--color-primary-600) 100%);
+    color: var(--color-on-primary);
+    padding-bottom: var(--spacing-xl);
+    padding-top: var(--spacing-sm);
+}
+.nc-hero h1 {
+    font-size: 2.25rem;
+    margin-top: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+}
+@media (max-width: 575.98px) {
+    .nc-hero h1 {
+        font-size: 1.6rem;
+    }
+}
+
+.nc-search {
+    max-width: 640px;
+    margin: 0 auto;
+}
+.nc-search .input-group {
+    background: var(--color-surface);
+    border-radius: var(--radius-pill);
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+    padding: 4px;
+}
+.nc-search input {
+    border: none !important;
+    border-radius: var(--radius-pill) !important;
+    box-shadow: none !important;
+}
+.nc-search button {
+    border-radius: var(--radius-pill) !important;
+    background: var(--color-accent);
+    color: #fff;
+    border: none;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+}
+.nc-search button:hover {
+    background: var(--color-accent-dark);
+}
+
+.nc-section {
+    padding-top: var(--spacing-xl);
+    padding-bottom: var(--spacing-xl);
+}
+
+/* Tarjetas de negocio */
+.nc-business-card {
+    background: var(--color-surface);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    padding: var(--spacing-md);
+    text-align: center;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: transform .2s ease, box-shadow .2s ease;
+    text-decoration: none;
+    color: inherit;
+}
+.nc-business-card:hover,
+.nc-business-card:focus-visible {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+    text-decoration: none;
+    color: inherit;
+}
+.nc-business-card__avatar {
+    width: var(--avatar-size);
+    height: var(--avatar-size);
+    border-radius: 50%;
+    object-fit: contain;
+    background: var(--color-bg);
+    padding: 6px;
+    margin-bottom: var(--spacing-sm);
+    border: 1px solid var(--color-border);
+}
+.nc-business-card__title {
+    font-family: var(--font-heading);
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-bottom: .1rem;
+    color: var(--color-text);
+}
+.nc-business-card__city {
+    color: var(--color-text-muted);
+    font-size: .85rem;
+    margin-bottom: var(--spacing-sm);
+}
+.nc-business-card__cta {
+    margin-top: auto;
+    font-size: .85rem;
+    font-weight: 600;
+    color: var(--color-primary);
+}
+
+.nc-empty {
+    text-align: center;
+    color: var(--color-text-muted);
+    padding: var(--spacing-xl) 0;
+}
+
+/* Modal "Publicá con nosotros" */
+.nc-modal-contact {
+    background: linear-gradient(160deg, var(--color-primary) 0%, var(--color-primary-600) 100%);
+    color: var(--color-on-primary);
+    border-radius: var(--radius-lg);
+}
+.nc-modal-contact a {
+    color: var(--color-on-primary);
+}
+
+/* Footer */
+.nc-footer {
+    background-color: var(--color-primary);
+    color: rgba(255, 255, 255, .75);
+    padding-top: var(--spacing-lg);
+    padding-bottom: var(--spacing-md);
+}
+.nc-footer strong {
+    color: #fff;
+}
+.nc-footer a {
+    color: #fff;
+    text-decoration: none;
+}
+.nc-footer a:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 575.98px) {
+    :root {
+        --avatar-size: 84px;
+    }
+}
+
+/* =====================================================================
+   Planes
+   ===================================================================== */
+
+.nc-plan-card {
+    background: var(--color-surface);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    padding: var(--spacing-lg) var(--spacing-md);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    transition: transform .2s ease, box-shadow .2s ease;
+}
+.nc-plan-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+}
+.nc-plan-card__icon {
+    font-size: 1.75rem;
+    color: var(--color-primary);
+    margin-bottom: var(--spacing-sm);
+}
+.nc-plan-card__title {
+    font-family: var(--font-heading);
+    font-size: 1.15rem;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: var(--spacing-sm);
+}
+.nc-plan-card__price {
+    text-align: center;
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--color-accent-dark);
+    background: none;
+    margin-bottom: var(--spacing-md);
+}
+.nc-plan-card ul {
+    list-style: none;
+    padding-left: 0;
+    flex-grow: 1;
+}
+.nc-plan-card li {
+    padding: .5rem 0;
+    border-bottom: 1px solid var(--color-border);
+    color: var(--color-text-muted);
+    font-size: .92rem;
+    text-align: center;
+}
+.nc-plan-card li:last-child {
+    border-bottom: none;
+}
+.nc-plan-card .nc-plan-card__cta {
+    margin-top: var(--spacing-md);
+    text-align: center;
+}
+
+/* =====================================================================
+   Chat de alta con Gemini
+   ===================================================================== */
+
+.nc-chat-page {
+    background: var(--color-bg);
+    min-height: 100vh;
+}
+
+/* Fase 4: el chat es un panel angosto a la izquierda, la vista previa en
+   vivo de la plantilla ocupa el resto de la pantalla -- es lo que el
+   usuario quiere ver mientras arma la página, no el chat en sí. */
+.nc-chat-layout {
+    display: flex;
+    min-height: 100vh;
+}
+.nc-chat-sidebar {
+    width: 420px;
+    flex: none;
+    height: 100vh;
+    overflow-y: auto;
+    box-shadow: var(--shadow-md);
+    position: relative;
+    z-index: 1;
+}
+.nc-chat-preview {
+    flex: 1;
+    min-width: 0;
+    background: var(--color-border);
+}
+.nc-chat-preview iframe {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+@media (max-width: 900px) {
+    .nc-chat-layout {
+        flex-direction: column;
+    }
+    .nc-chat-sidebar {
+        width: 100%;
+        height: auto;
+        max-height: 60vh;
+    }
+    .nc-chat-preview {
+        height: 40vh;
+    }
+}
+
+.nc-chat-container {
+    max-width: 680px;
+    margin: 0 auto;
+    padding-top: var(--spacing-lg);
+    padding-bottom: var(--spacing-lg);
+    padding-left: var(--spacing-md);
+    padding-right: var(--spacing-md);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+.nc-chat-header {
+    text-align: center;
+    margin-bottom: var(--spacing-md);
+}
+.nc-chat-box {
+    flex: 1;
+    min-height: 220px;
+    overflow-y: auto;
+    background: var(--color-surface);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    padding: var(--spacing-md);
+    display: flex;
+    flex-direction: column;
+}
+.nc-msg-wrap {
+    display: flex;
+    margin-bottom: var(--spacing-sm);
+}
+.nc-msg-wrap--user {
+    justify-content: flex-end;
+}
+.nc-msg {
+    max-width: 80%;
+    padding: .65rem 1rem;
+    border-radius: var(--radius-md);
+    white-space: pre-line;
+    line-height: 1.4;
+    font-size: .95rem;
+}
+.nc-msg--bot {
+    background: var(--color-primary-50);
+    color: var(--color-text);
+    border-bottom-left-radius: 4px;
+}
+.nc-msg--user {
+    background: var(--color-primary);
+    color: #fff;
+    border-bottom-right-radius: 4px;
+}
+.nc-chat-form {
+    margin-top: var(--spacing-sm);
+    display: flex;
+    gap: .5rem;
+}
+.nc-chat-form input {
+    flex-grow: 1;
+    border-radius: var(--radius-pill);
+    border: 1px solid var(--color-border);
+    padding: .65rem 1.1rem;
+}
+.nc-chat-form input:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px var(--color-primary-50);
+}
+.nc-chat-form button {
+    border-radius: var(--radius-pill);
+    background: var(--color-accent);
+    border: none;
+    color: #fff;
+    padding: .65rem 1.5rem;
+    font-weight: 600;
+}
+.nc-chat-form button:hover {
+    background: var(--color-accent-dark);
+}
+.nc-chat-form button:disabled,
+.nc-chat-form input:disabled {
+    opacity: .6;
+}
+.nc-chat-confirm {
+    margin-top: var(--spacing-sm);
+    text-align: center;
+}
+.nc-chat-confirm button {
+    border-radius: var(--radius-pill);
+    padding: .7rem 2rem;
+    font-weight: 600;
+}
+.nc-chat-alt-link {
+    text-align: center;
+    margin-top: var(--spacing-md);
+    font-size: .9rem;
+}

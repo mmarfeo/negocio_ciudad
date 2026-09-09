@@ -1,0 +1,162 @@
+/* =====================================================================
+   Estética del formulario de alta/edición manual (admin/negocio_form.blade.php)
+   Hoja escrita a mano, cargada después de app.css -- mismo criterio que
+   public/css/0N-*/negocios-overrides.css: pisa look-and-feel sin pasar por
+   el build de Mix. Reutiliza los tokens de resources/css/app.css (colores,
+   tipografía, radios, sombras) para que el panel deje de verse como HTML
+   sin estilar y se sienta parte del mismo sitio.
+   ===================================================================== */
+
+body {
+    background-color: var(--color-bg);
+}
+
+/* ---------- Encabezado de la página ---------- */
+.na-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--spacing-lg);
+}
+.na-topbar__brand img {
+    display: block;
+}
+.na-topbar__back {
+    color: var(--color-text-muted);
+    font-weight: 600;
+    font-size: .9rem;
+    text-decoration: none;
+}
+.na-topbar__back:hover {
+    color: var(--color-primary);
+    text-decoration: none;
+}
+h1.na-title {
+    font-size: 1.6rem;
+    color: var(--color-text);
+    margin-bottom: var(--spacing-lg);
+}
+
+/* ---------- Tarjetas de sección ---------- */
+.card {
+    border: none;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+}
+.card-header {
+    background-color: var(--color-primary-50);
+    color: var(--color-primary);
+    border-bottom: none;
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 1.02rem;
+    padding: var(--spacing-md) var(--spacing-md);
+}
+.card-body {
+    padding: var(--spacing-md);
+}
+
+/* ---------- Campos ---------- */
+label {
+    font-weight: 600;
+    font-size: .85rem;
+    color: var(--color-text);
+    margin-bottom: .35rem;
+}
+.form-control,
+.form-control-file,
+select.form-control {
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    padding: .55rem .85rem;
+    font-size: .95rem;
+    color: var(--color-text);
+}
+.form-control:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px var(--color-primary-50);
+}
+textarea.form-control {
+    border-radius: var(--radius-sm);
+}
+.form-group {
+    margin-bottom: var(--spacing-md);
+}
+.text-muted {
+    color: var(--color-text-muted) !important;
+}
+
+/* ---------- Filas de producto / tarjeta / imagen (bloques repetidos) ---------- */
+.na-item-row {
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    padding: var(--spacing-md);
+    margin-bottom: var(--spacing-sm);
+    background-color: var(--color-surface);
+}
+.card-body > .na-item-row:last-child {
+    margin-bottom: 0;
+}
+hr.na-item-divider {
+    display: none; /* las filas ya se separan con .na-item-row, sin línea suelta de más */
+}
+
+/* Campo de imagen (admin/partials/campo_imagen.blade.php) */
+.campo-imagen-file {
+    font-size: .85rem;
+}
+.btn-abrir-galeria,
+.btn-sugerir-texto {
+    border-radius: var(--radius-pill);
+    font-weight: 600;
+    font-size: .8rem;
+}
+.btn-abrir-galeria {
+    padding: .35rem .9rem;
+}
+.btn-sugerir-texto {
+    color: var(--color-accent-dark);
+}
+.btn-sugerir-texto:hover {
+    color: var(--color-accent-dark);
+    text-decoration: underline;
+}
+
+/* ---------- Paso de colores por sección ---------- */
+.btn-paleta {
+    border-radius: var(--radius-sm) !important;
+}
+input[type="color"].color-zona-input {
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    height: 2.4rem;
+    width: 100%;
+    padding: .2rem;
+}
+
+/* ---------- Acciones finales ---------- */
+.na-acciones {
+    display: flex;
+    gap: var(--spacing-sm);
+    align-items: center;
+    margin-top: var(--spacing-lg);
+    margin-bottom: var(--spacing-xl);
+}
+.na-acciones .btn {
+    padding: .75rem 1.75rem;
+}
+
+/* ---------- Sección "Cobros" (Mercado Pago) ---------- */
+.na-cobros p {
+    max-width: 640px;
+}
+
+/* ---------- Modal de galería propia ---------- */
+#galeriaOverlay > div {
+    border-radius: var(--radius-lg) !important;
+    box-shadow: var(--shadow-lg);
+}
+#galeriaGrid img {
+    border-radius: var(--radius-sm) !important;
+}

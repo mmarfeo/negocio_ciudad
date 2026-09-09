@@ -12,6 +12,9 @@ class VerifyCsrfToken extends Middleware
      * @var array
      */
     protected $except = [
-        //
+        // Mercado Pago llama a esta URL directo, sin token CSRF -- la
+        // seguridad la da la verificación de firma en
+        // MercadoPagoService::verificarFirmaWebhook(), no Laravel.
+        'webhooks/mercadopago/*',
     ];
 }

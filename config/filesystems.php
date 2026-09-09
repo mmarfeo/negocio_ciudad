@@ -35,9 +35,28 @@ return [
             'root' => storage_path('app'),
         ],
 
+        // OJO -- en Hostinger el dominio se sirve desde una carpeta HERMANA
+        // de negocio_ciudad llamada `public_html` (confirmado 2026-08-27;
+        // mismo motivo por el que hay que subir los CSS ahí a mano). Antes
+        // esto apuntaba siempre a `public_path('storage')`
+        // (negocio_ciudad/public/storage) -- una carpeta que el dominio real
+        // nunca sirve -- así que cualquier archivo subido en vivo (logo,
+        // fotos de producto, header, etc.) quedaba guardado en un lugar
+        // inalcanzable y daba 404 al mostrarlo, aunque la subida en sí
+        // funcionara bien.
+        //
+        // PUBLIC_STORAGE_PATH es la ruta ABSOLUTA a la carpeta `storage`
+        // real que sirve el dominio -- se define en el `.env` de
+        // producción, ej. PUBLIC_STORAGE_PATH=/home/u374453216/domains/negociosentuciudad.com/public_html/storage
+        // (buscar la ruta exacta en el panel de Hostinger -> Administrador
+        // de archivos -> parada en la carpeta public_html -> suele
+        // mostrarla en algún lado, o preguntarle a soporte de Hostinger).
+        // Sin esa variable, cae al comportamiento de siempre
+        // (public_path('storage')) -- así no se rompe el entorno local, que
+        // no tiene esa carpeta hermana.
         'public' => [
             'driver' => 'local',
-            'root' => storage_path('app/public'),
+            'root' => env('PUBLIC_STORAGE_PATH', public_path('storage')),
             'url' => env('APP_URL').'/storage',
             'visibility' => 'public',
         ],

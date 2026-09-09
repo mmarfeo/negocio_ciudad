@@ -1,5 +1,31 @@
-* text=auto
-*.css linguist-vendored
-*.scss linguist-vendored
-*.js linguist-vendored
-CHANGELOG.md export-ignore
+# Normaliza fin de línea a LF en el repo para archivos de texto.
+# Evita que `core.autocrlf=true` (Windows) marque como "modificados"
+# archivos que no cambiaron -- ver Fase 8, higiene de git.
+* text=auto eol=lf
+
+*.php   text eol=lf
+*.blade.php text eol=lf
+*.js    text eol=lf
+*.css   text eol=lf
+*.scss  text eol=lf
+*.json  text eol=lf
+*.md    text eol=lf
+*.sql   text eol=lf
+*.html  text eol=lf
+*.xml   text eol=lf
+*.yml   text eol=lf
+*.yaml  text eol=lf
+
+# Binarios: nunca tocar
+*.png   binary
+*.jpg   binary
+*.jpeg  binary
+*.gif   binary
+*.webp  binary
+*.ico   binary
+*.woff  binary
+*.woff2 binary
+*.ttf   binary
+*.eot   binary
+*.otf   binary
+*.pdf   binary

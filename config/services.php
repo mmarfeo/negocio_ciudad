@@ -30,4 +30,20 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'gemini' => [
+        'key' => env('GEMINI_API_KEY'),
+        'model' => env('GEMINI_MODEL', 'gemini-2.0-flash'),
+    ],
+
+    // Marketplace con Mercado Pago Connect (plantilla "Tienda"): client_id/
+    // secret son de la Aplicación de la PLATAFORMA (developers.mercadopago.com),
+    // no de cada negocio -- cada negocio conecta su propia cuenta por OAuth
+    // y su access_token propio queda guardado en `negocio_mercadopago`.
+    'mercadopago' => [
+        'client_id' => env('MERCADOPAGO_CLIENT_ID'),
+        'client_secret' => env('MERCADOPAGO_CLIENT_SECRET'),
+        'webhook_secret' => env('MERCADOPAGO_WEBHOOK_SECRET'),
+        'comision_porcentaje' => env('MERCADOPAGO_COMISION_PORCENTAJE', 0.5),
+    ],
+
 ];
