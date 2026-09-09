@@ -60,7 +60,7 @@ class MercadoPagoService
 
     public function credencialesDe(Product $negocio): ?NegocioMercadopago
     {
-        return NegocioMercadopago::where('negocio_id', $negocio->id)->first();
+        return $negocio->mercadopago()->first();
     }
 
     /**
@@ -180,7 +180,7 @@ class MercadoPagoService
 
     public function desconectar(Product $negocio): void
     {
-        NegocioMercadopago::where('negocio_id', $negocio->id)->delete();
+        $negocio->mercadopago()->delete();
     }
 
     /**

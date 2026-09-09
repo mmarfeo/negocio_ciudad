@@ -11,7 +11,7 @@
         @if ($negocio->exists)
             <a href="{{ $negocio->urlPublica() }}" class="td-nav__brand">
                 @if ($negocio->propiedades && $negocio->propiedades->imagenUrl('nav_logo'))
-                    <img src="{{ $negocio->propiedades->imagenUrl('nav_logo') }}" alt="{{ $negocio->nombre }}">
+                    <img src="{{ $negocio->propiedades->imagenUrl('nav_logo') }}" alt="{{ $negocio->nombre }}" onerror="this.onerror=null;this.src='{{ asset('img/placeholder.svg') }}'">
                 @endif
                 <span>{{ $negocio->nombre }}</span>
             </a>
@@ -25,7 +25,7 @@
         @else
             <span class="td-nav__brand">
                 @if ($negocio->propiedades && $negocio->propiedades->imagenUrl('nav_logo'))
-                    <img src="{{ $negocio->propiedades->imagenUrl('nav_logo') }}" alt="{{ $negocio->nombre }}">
+                    <img src="{{ $negocio->propiedades->imagenUrl('nav_logo') }}" alt="{{ $negocio->nombre }}" onerror="this.onerror=null;this.src='{{ asset('img/placeholder.svg') }}'">
                 @endif
                 <span>{{ $negocio->nombre }}</span>
             </span>

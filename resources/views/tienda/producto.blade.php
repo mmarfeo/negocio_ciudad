@@ -27,7 +27,7 @@
             <div class="td-detalle">
                 <div class="td-detalle__img">
                     @if ($imagenUrl)
-                        <img src="{{ $imagenUrl }}" alt="{{ $producto->nombre }}">
+                        <img src="{{ $imagenUrl }}" alt="{{ $producto->nombre }}" onerror="this.onerror=null;this.src='{{ asset('img/placeholder.svg') }}'">
                     @endif
                 </div>
                 <div>

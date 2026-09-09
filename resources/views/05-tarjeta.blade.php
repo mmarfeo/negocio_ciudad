@@ -72,7 +72,7 @@
                 <br>
                 <div class="row">
                     <div class="col-lg-3 ml-auto">
-                        <img src="{{ $propiedades->imagenUrl('nav_logo') ?? asset('img/logo.png') }}" class="masthead-avatar mb-2 pt-3" alt="{{ $negocio->nombre }}"/>
+                        <img src="{{ $propiedades->imagenUrl('nav_logo') ?? asset('img/logo.png') }}" class="masthead-avatar mb-2 pt-3" alt="{{ $negocio->nombre }}" onerror="this.onerror=null;this.src='{{ asset('img/placeholder.svg') }}'"/>
                     </div>
                     <div class="col-lg-6 mr-auto">
                         <div class="row">

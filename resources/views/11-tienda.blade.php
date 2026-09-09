@@ -81,7 +81,7 @@
               @if ($negocio->exists)
                 <a href="{{ route('tienda.producto', [$negocio->ciudad_slug, $negocio->slug, $producto->slug]) }}" class="td-card__img @if (! $imagenUrl) td-card__img--placeholder @endif">
                   @if ($imagenUrl)
-                    <img src="{{ $imagenUrl }}" alt="{{ $producto->nombre }}" loading="lazy">
+                    <img src="{{ $imagenUrl }}" alt="{{ $producto->nombre }}" loading="lazy" onerror="this.onerror=null;this.src='{{ asset('img/placeholder.svg') }}'">
                   @else
                     <span>{{ $producto->nombre }}</span>
                   @endif
@@ -91,7 +91,7 @@
                      linkear (sin slug/ciudad_slug), se muestra sin link. --}}
                 <div class="td-card__img @if (! $imagenUrl) td-card__img--placeholder @endif">
                   @if ($imagenUrl)
-                    <img src="{{ $imagenUrl }}" alt="{{ $producto->nombre }}" loading="lazy">
+                    <img src="{{ $imagenUrl }}" alt="{{ $producto->nombre }}" loading="lazy" onerror="this.onerror=null;this.src='{{ asset('img/placeholder.svg') }}'">
                   @else
                     <span>{{ $producto->nombre }}</span>
                   @endif

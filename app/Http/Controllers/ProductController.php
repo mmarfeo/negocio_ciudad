@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Models\ProductoCatalogo;
-use App\Models\propiedades_plantillas;
 use App\Support\Plantillas;
 use Illuminate\Http\Request;
 
@@ -117,7 +116,7 @@ class ProductController extends Controller
         }
 
         if (Plantillas::pasaDatos($plantillaId)) {
-            $propiedades = propiedades_plantillas::where('negocio_id', $products->id)->first();
+            $propiedades = $products->propiedades;
 
             return view($config['vista'], compact('products', 'propiedades'));
         }

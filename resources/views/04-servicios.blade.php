@@ -17,7 +17,8 @@
 </head>
 
 <body>
-    <header class="hero" style="background-image: url('{{ $propiedades->imagenUrl('header_img_1') }}')">
+    @php $heroImg = $propiedades->imagenUrl('header_img_1'); @endphp
+    <header class="hero"@if ($heroImg) style="background-image: url('{{ $heroImg }}')"@endif>
         <nav>
             <a href="#body_titulo_principal">Acerca de</a>
             @if ($propiedades->body_titulo_nuestros_trabajos)
@@ -52,7 +53,7 @@
     @if ($propiedades->body_titulo || $propiedades->imagenUrl('body_tarjeta_img_1'))
         <section class="wave-contenedor website">
             @if ($propiedades->imagenUrl('body_tarjeta_img_1'))
-                <img src="{{ $propiedades->imagenUrl('body_tarjeta_img_1') }}" alt="{{ $propiedades->body_titulo }}">
+                <img src="{{ $propiedades->imagenUrl('body_tarjeta_img_1') }}" alt="{{ $propiedades->body_titulo }}" onerror="this.onerror=null;this.src='{{ asset('img/placeholder.svg') }}'">
             @endif
             <div class="contenedor-textos-main">
                 <h2 class="titulo left">{{ $propiedades->body_titulo }}</h2>
@@ -68,7 +69,7 @@
                 <p class="parrafo">{{ $propiedades->body_parrafo_2 }}</p>
             </div>
             @if ($propiedades->imagenUrl('body_tarjeta_img_2'))
-                <img src="{{ $propiedades->imagenUrl('body_tarjeta_img_2') }}" alt="{{ $propiedades->body_titulo_2 }}">
+                <img src="{{ $propiedades->imagenUrl('body_tarjeta_img_2') }}" alt="{{ $propiedades->body_titulo_2 }}" onerror="this.onerror=null;this.src='{{ asset('img/placeholder.svg') }}'">
             @endif
         </section>
     @endif
@@ -77,7 +78,7 @@
         <section class="wave-contenedor website">
             <div class="contenedor last-section">
                 @if ($propiedades->imagenUrl('body_tarjeta_img_3'))
-                    <img src="{{ $propiedades->imagenUrl('body_tarjeta_img_3') }}" alt="{{ $propiedades->body_titulo_3 }}">
+                    <img src="{{ $propiedades->imagenUrl('body_tarjeta_img_3') }}" alt="{{ $propiedades->body_titulo_3 }}" onerror="this.onerror=null;this.src='{{ asset('img/placeholder.svg') }}'">
                 @endif
                 <div class="contenedor-textos-main">
                     <h2 class="titulo left">{{ $propiedades->body_titulo_3 }}</h2>
@@ -95,7 +96,7 @@
                     <p class="parrafo">{{ $propiedades->body_parrafo_4 }}</p>
                 </div>
                 @if ($propiedades->imagenUrl('body_tarjeta_img_4'))
-                    <img src="{{ $propiedades->imagenUrl('body_tarjeta_img_4') }}" alt="{{ $propiedades->body_titulo_4 }}">
+                    <img src="{{ $propiedades->imagenUrl('body_tarjeta_img_4') }}" alt="{{ $propiedades->body_titulo_4 }}" onerror="this.onerror=null;this.src='{{ asset('img/placeholder.svg') }}'">
                 @endif
             </div>
         </section>
@@ -109,7 +110,7 @@
                     @for ($n = 5; $n <= 7; $n++)
                         @php $img = $propiedades->imagenUrl("body_tarjeta_img_{$n}"); @endphp
                         @if ($img)
-                            <img src="{{ $img }}" alt="{{ $propiedades->body_titulo_nuestros_trabajos }}">
+                            <img src="{{ $img }}" alt="{{ $propiedades->body_titulo_nuestros_trabajos }}" onerror="this.onerror=null;this.src='{{ asset('img/placeholder.svg') }}'">
                         @endif
                     @endfor
                 </article>

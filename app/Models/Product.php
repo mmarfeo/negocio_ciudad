@@ -25,6 +25,18 @@ class Product extends Model
             return $this->hasOne(propiedades_plantillas::class, 'negocio_id');
         }
 
+        /** Credenciales de Mercado Pago Connect de este negocio (1:1). */
+        public function mercadopago()
+        {
+            return $this->hasOne(NegocioMercadopago::class, 'negocio_id');
+        }
+
+        /** Pedidos de la plantilla "Tienda" de este negocio. */
+        public function pedidos()
+        {
+            return $this->hasMany(Pedido::class, 'negocio_id');
+        }
+
         /**
          * Normaliza un nombre de ciudad al segmento que va en la URL
          * pública (`/{ciudad}/{slug}`). Negocios sin ciudad cargada usan

@@ -61,7 +61,7 @@
     <div class="vd-wrap vd-nav__row">
       <a href="#" class="vd-nav__brand">
         @if ($propiedades->imagenUrl('nav_logo'))
-          <img src="{{ $propiedades->imagenUrl('nav_logo') }}" alt="{{ $negocio->nombre }}">
+          <img src="{{ $propiedades->imagenUrl('nav_logo') }}" alt="{{ $negocio->nombre }}" onerror="this.onerror=null;this.src='{{ asset('img/placeholder.svg') }}'">
         @endif
         <span>{{ $negocio->nombre }}</span>
       </a>
@@ -165,7 +165,7 @@
             <div class="vd-card vd-reveal">
               <div class="vd-card__img @if (! $item['img']) vd-card__img--placeholder @endif">
                 @if ($item['img'])
-                  <img src="{{ $item['img'] }}" alt="{{ $item['titulo'] }}" loading="lazy">
+                  <img src="{{ $item['img'] }}" alt="{{ $item['titulo'] }}" loading="lazy" onerror="this.onerror=null;this.src='{{ asset('img/placeholder.svg') }}'">
                 @else
                   <span style="font-family:'Poppins',sans-serif; font-weight:700;">{{ $negocio->nombre }}</span>
                 @endif

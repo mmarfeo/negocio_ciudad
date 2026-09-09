@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\PerteneceANegocio;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Crypt;
 
@@ -13,6 +14,8 @@ use Illuminate\Support\Facades\Crypt;
  */
 class NegocioMercadopago extends Model
 {
+    use PerteneceANegocio;
+
     protected $table = 'negocio_mercadopago';
 
     protected $fillable = [
@@ -24,11 +27,6 @@ class NegocioMercadopago extends Model
         'token_expires_at' => 'datetime',
         'conectado_en' => 'datetime',
     ];
-
-    public function negocio()
-    {
-        return $this->belongsTo(Product::class, 'negocio_id');
-    }
 
     public function setAccessTokenAttribute(?string $valor): void
     {

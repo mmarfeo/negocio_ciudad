@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\PerteneceANegocio;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
@@ -9,6 +10,8 @@ use Illuminate\Support\Str;
 
 class propiedades_plantillas extends Model
 {
+    use PerteneceANegocio;
+
     public $table = "plantillas_propiedades";
     public $primaryKey = "id";
     // Misma tabla "hecha a mano" que negocios -- probablemente tampoco
@@ -54,11 +57,6 @@ class propiedades_plantillas extends Model
         5 => '05-tarjeta',
     ];
 
-    public function negocio()
-    {
-        return $this->belongsTo(Product::class, 'negocio_id');
-    }
-
     /**
      * Resuelve la URL pública de un campo de imagen, sea que haya sido
      * subido con el sistema de storage nuevo (ruta "negocios/{id}/...")
@@ -89,6 +87,23 @@ class propiedades_plantillas extends Model
         }
 
         return asset("img/{$carpeta}/{$negocio->dir_carpeta}/{$valor}");
+    }
+
+    /**
+     * Igual que imagenUrl() pero nunca devuelve null: si el campo no tiene
+     * imagen, devuelve el placeholder genérico. Para los <img> que no van
+     * dentro de un @if (ej. tarjetas de la plantilla "Productos") -- evita
+     * el src="" que muestra el ícono de imagen rota. Fase 8, Bloque B.
+     */
+    public function imagenUrlOPlaceholder(string $campo): string
+    {
+        return $this->imagenUrl($campo) ?? asset('img/placeholder.svg');
+    }
+
+    /** URL del placeholder genérico, para usar en onerror de los <img>. */
+    public static function placeholderUrl(): string
+    {
+        return asset('img/placeholder.svg');
     }
 
     /**

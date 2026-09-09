@@ -37,7 +37,7 @@
 
       <a class="navbar-brand" href="#">
         @if ($propiedades->imagenUrl('nav_logo'))
-          <img height="40" src="{{ $propiedades->imagenUrl('nav_logo') }}" alt="{{ $negocio->nombre }}">
+          <img height="40" src="{{ $propiedades->imagenUrl('nav_logo') }}" alt="{{ $negocio->nombre }}" onerror="this.onerror=null;this.src='{{ asset('img/placeholder.svg') }}'">
         @endif
       </a>
       <a href="#"><h5 class="text-white">{{ $negocio->nombre }}</h5></a>
@@ -127,7 +127,7 @@
           @if ($titulo)
             <div class="col-lg-3 col-md-6 mb-4">
               <div class="card h-100">
-                <img class="card-img-top" src="{{ $propiedades->imagenUrl("body_tarjeta_img_{$n}") }}" alt="{{ $titulo }}">
+                <img class="card-img-top" src="{{ $propiedades->imagenUrlOPlaceholder("body_tarjeta_img_{$n}") }}" alt="{{ $titulo }}" onerror="this.onerror=null;this.src='{{ asset('img/placeholder.svg') }}'">
                 <div class="card-body">
                   <h4 class="card-title">{{ $titulo }}</h4>
                   <p class="card-text">{{ $propiedades->{"body_tarjeta_parrafo_{$n}"} }}</p>

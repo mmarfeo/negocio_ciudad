@@ -52,7 +52,7 @@
                 <br>
                 <div class="row">
                     <div class="col-lg-3 ml-auto">
-                        <img src="{{ $propiedades->imagenUrl('nav_logo') ?? asset('img/logo.png') }}" class="masthead-avatar mb-2 pt-3" alt="{{ $negocio->nombre }}" />
+                        <img src="{{ $propiedades->imagenUrl('nav_logo') ?? asset('img/logo.png') }}" class="masthead-avatar mb-2 pt-3" alt="{{ $negocio->nombre }}" onerror="this.onerror=null;this.src='{{ asset('img/placeholder.svg') }}'" />
                     </div>
                     <div class="col-lg-6 mr-auto">
                         <div class="row">
@@ -132,7 +132,7 @@
                                     <div class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">
                                         <div class="portfolio-item-caption-content text-center text-white"><i class="fas fa-plus fa-3x"></i></div>
                                     </div>
-                                    <img class="img-fluid" src="{{ $img }}" alt="{{ $negocio->nombre }}" />
+                                    <img class="img-fluid" src="{{ $img }}" alt="{{ $negocio->nombre }}" onerror="this.onerror=null;this.src='{{ asset('img/placeholder.svg') }}'" />
                                 </div>
                             </div>
                         @endif
@@ -205,7 +205,7 @@
                                 <div class="container">
                                     <div class="row justify-content-center">
                                         <div class="col-lg-8">
-                                            <img class="img-fluid rounded mb-5" src="{{ $imgModal }}" alt="{{ $negocio->nombre }}" />
+                                            <img class="img-fluid rounded mb-5" src="{{ $imgModal }}" alt="{{ $negocio->nombre }}" onerror="this.onerror=null;this.src='{{ asset('img/placeholder.svg') }}'" />
                                         </div>
                                     </div>
                                 </div>
