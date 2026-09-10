@@ -2,10 +2,13 @@
 
 namespace App\Services;
 
+use App\Models\OnboardingSesion;
 use App\Models\Product;
 use App\Models\ProductoCatalogo;
 use App\Models\propiedades_plantillas;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 /**
  * Único camino de escritura para crear/editar un negocio + sus propiedades
@@ -103,5 +106,65 @@ class NegocioWriter
         }
 
         $negocio->productos()->sync($pivotData);
+    }
+
+    /**
+     * Fase 8, Bloque D: crea el negocio real a partir de una solicitud del
+     * chat (OnboardingSesion en estado `enviada`). Lo llama el panel del
+     * desarrollador (SolicitudWebController) -- es lo que antes hacía
+     * ChatController::confirmar() directo. Deja la solicitud en
+     * `en_construccion` y linkeada al negocio; el negocio queda creado pero
+     * el dev lo termina de ajustar en el form manual antes de publicarlo.
+     */
+    public function publicarSolicitud(OnboardingSesion $sesion): Product
+    {
+        [$datosNegocio, $datosPropiedades, , $productos] = $sesion->mapearParaWriter();
+
+        // Slug único por ciudad (Fase 4).
+        $ciudadSlug = Product::normalizarCiudadSlug($datosNegocio['ciudad'] ?? null);
+        $slugBase = Str::slug($datosNegocio['nombre'] ?? 'negocio');
+        $slug = $slugBase;
+        $i = 2;
+        while (Product::where('ciudad_slug', $ciudadSlug)->where('slug', $slug)->exists()) {
+            $slug = $slugBase.'-'.$i;
+            $i++;
+        }
+        $datosNegocio['slug'] = $slug;
+
+        $negocio = $this->guardarNegocio($datosNegocio);
+
+        // Las fotos viven en solicitudes/{token}/ (las movió confirmar()).
+        // Compatibilidad: solicitudes muy viejas pueden tenerlas todavía en
+        // onboarding/{token}/ o ya con la ruta final -- Storage::move() solo
+        // se llama si el origen existe.
+        $d = $sesion->datos ?? [];
+        if (! empty($d['logo_path']) && Storage::disk('public')->exists($d['logo_path'])) {
+            $nuevaRuta = 'negocios/'.$negocio->id.'/'.basename($d['logo_path']);
+            Storage::disk('public')->move($d['logo_path'], $nuevaRuta);
+            $negocio->nav_logo = $nuevaRuta;
+            $negocio->save();
+            $datosPropiedades['nav_logo'] = $nuevaRuta;
+        }
+
+        foreach ($productos as &$producto) {
+            if (! empty($producto['imagen']) && Storage::disk('public')->exists($producto['imagen'])) {
+                $nuevaRuta = 'negocios/'.$negocio->id.'/'.basename($producto['imagen']);
+                Storage::disk('public')->move($producto['imagen'], $nuevaRuta);
+                $producto['imagen'] = $nuevaRuta;
+            }
+        }
+        unset($producto);
+
+        Storage::disk('public')->deleteDirectory('solicitudes/'.$sesion->token);
+        Storage::disk('public')->deleteDirectory('onboarding/'.$sesion->token);
+
+        $this->guardarPropiedades($negocio, $datosPropiedades);
+        $this->sincronizarProductos($negocio, $productos);
+
+        $sesion->negocio_id = $negocio->id;
+        $sesion->estado = 'en_construccion';
+        $sesion->save();
+
+        return $negocio;
     }
 }

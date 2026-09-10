@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\NegocioAdminController;
 use App\Http\Controllers\ChatController;
+use App\Http\Controllers\SolicitudWebController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PanelInternoController;
 use App\Http\Controllers\MercadoPagoController;
@@ -51,8 +52,11 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 // registrados. Tiene que ir antes del catch-all de más abajo.
 Route::middleware('auth')->group(function () {
     Route::get('/mis-negocios', [NegocioAdminController::class, 'misNegocios'])->name('negocios.mios');
-    Route::get('/admin/negocios/crear', [NegocioAdminController::class, 'create'])->name('negocios.create');
-    Route::post('/admin/negocios', [NegocioAdminController::class, 'store'])->name('negocios.store');
+    // Fase 8, Bloque D: el usuario ve el estado de sus solicitudes de página.
+    Route::get('/mis-solicitudes', [SolicitudWebController::class, 'mias'])->name('solicitudes.mias');
+    // Editar un negocio propio sigue disponible para el dueño (edit/update
+    // ya chequean propiedad). Crear uno nuevo y publicarlo pasó a ser
+    // tarea del desarrollador -- ver el grupo 'es_admin' más abajo.
     Route::get('/admin/negocios/{negocio}/editar', [NegocioAdminController::class, 'edit'])->name('negocios.edit');
     Route::put('/admin/negocios/{negocio}', [NegocioAdminController::class, 'update'])->name('negocios.update');
     // Banco propio de fotos para elegir por sección (Fase 5, Paso 3).
@@ -82,10 +86,21 @@ Route::middleware('auth')->group(function () {
     });
 });
 
-// Panel interno (solo admin de la plataforma, no dueños de negocio comunes)
-// -- documentación y roadmap para prepararse antes de hablar con socios.
+// Panel del desarrollador / admin de plataforma (no dueños de negocio
+// comunes). 'es_admin' devuelve 404 a quien no lo sea (ver EnsureEsAdmin).
 Route::middleware(['auth', 'es_admin'])->group(function () {
     Route::get('/panel-socios', [PanelInternoController::class, 'index'])->name('panel.socios');
+
+    // Fase 8, Bloque D: alta manual de negocios (antes cualquier usuario
+    // logueado) + gestión de las solicitudes que llegan del chat.
+    Route::get('/admin/negocios/crear', [NegocioAdminController::class, 'create'])->name('negocios.create');
+    Route::post('/admin/negocios', [NegocioAdminController::class, 'store'])->name('negocios.store');
+
+    Route::get('/admin/solicitudes', [SolicitudWebController::class, 'index'])->name('solicitudes.index');
+    Route::get('/admin/solicitudes/{solicitud}', [SolicitudWebController::class, 'show'])->name('solicitudes.show');
+    Route::post('/admin/solicitudes/{solicitud}/crear-negocio', [SolicitudWebController::class, 'crearNegocio'])->name('solicitudes.crearNegocio');
+    Route::post('/admin/solicitudes/{solicitud}/estado', [SolicitudWebController::class, 'actualizarEstado'])->name('solicitudes.estado');
+    Route::post('/admin/solicitudes/{solicitud}/notas', [SolicitudWebController::class, 'guardarNotas'])->name('solicitudes.notas');
 });
 
 // Webhook de Mercado Pago (marketplace, ver MercadoPagoService::crearPreferencia())

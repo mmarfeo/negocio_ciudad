@@ -124,6 +124,7 @@ class ChatController extends Controller
 
         $sesion = OnboardingSesion::create([
             'token' => (string) Str::uuid(),
+            'user_id' => auth()->id(),
             'paso' => $pasoInicial,
             'estado' => 'en_progreso',
             'datos' => [],
@@ -158,7 +159,7 @@ class ChatController extends Controller
 
         $sesion = OnboardingSesion::where('token', $request->token)->firstOrFail();
 
-        if ($sesion->estado === 'completado') {
+        if (! $sesion->enProgreso()) {
             return response()->json(['error' => 'Esta conversación ya terminó.'], 409);
         }
 
@@ -557,21 +558,30 @@ class ChatController extends Controller
             $lineas[] = '- Productos/servicios: '.count($productos).' cargados';
         }
 
-        $lineas[] = '¿Confirmamos y publicamos tu página?';
+        $lineas[] = '¿Enviamos tu pedido para que armemos la página?';
 
         return implode("\n", $lineas);
     }
 
+    /**
+     * Fase 8, Bloque D: el chat ya NO publica la página. Al confirmar, la
+     * conversación queda como una "solicitud" (estado `enviada`) que el
+     * desarrollador toma desde el panel (SolicitudWebController) para armar
+     * y publicar la página. Acá solo se cierran los datos y se mueven los
+     * archivos subidos a una carpeta estable.
+     */
     public function confirmar(Request $request)
     {
         $request->validate(['token' => 'required|uuid']);
 
         $sesion = OnboardingSesion::where('token', $request->token)->firstOrFail();
 
-        if ($sesion->estado === 'completado') {
-            $negocioExistente = Product::find($sesion->negocio_id);
-
-            return response()->json(['redirect' => $negocioExistente ? $negocioExistente->urlPublica() : '/']);
+        if (! $sesion->enProgreso()) {
+            return response()->json([
+                'ok' => true,
+                'yaEnviada' => true,
+                'mensaje' => 'Ya recibimos tu pedido. Te vamos a avisar cuando la página esté lista.',
+            ]);
         }
 
         $d = $sesion->datos ?? [];
@@ -586,137 +596,73 @@ class ChatController extends Controller
             return response()->json([
                 'error' => 'Falta el nombre del negocio.',
                 'reabrirChat' => true,
-                'respuesta' => 'Me falta el nombre de tu negocio para poder publicarlo. ¿Cómo se llama?',
+                'respuesta' => 'Me falta el nombre de tu negocio para poder enviar el pedido. ¿Cómo se llama?',
             ], 422);
         }
 
-        [$datosNegocio, $datosPropiedades, , $productos] = $this->datosDelPaso($sesion);
+        // Los archivos se subieron a onboarding/{token}/ (temporal). Se
+        // mueven a solicitudes/{token}/ -- una carpeta estable que el panel
+        // del desarrollador puede mostrar, y desde donde la publicación
+        // real (NegocioWriter::publicarSolicitud) los mueve a negocios/{id}/.
+        $origen = 'onboarding/'.$sesion->token;
+        $destino = 'solicitudes/'.$sesion->token;
 
-        // Fase 4: el slug es único por ciudad, no global -- dos negocios
-        // del mismo nombre en ciudades distintas ya no chocan.
-        $ciudadSlug = Product::normalizarCiudadSlug($datosNegocio['ciudad'] ?? null);
-        $slugBase = Str::slug($datosNegocio['nombre']);
-        $slug = $slugBase;
-        $i = 2;
-        while (Product::where('ciudad_slug', $ciudadSlug)->where('slug', $slug)->exists()) {
-            $slug = $slugBase.'-'.$i;
-            $i++;
-        }
-        $datosNegocio['slug'] = $slug;
-
-        $negocio = $this->writer->guardarNegocio($datosNegocio);
-
-        // El logo y las fotos de producto se subieron a una carpeta temporal
-        // (onboarding/{token}/...) mientras el negocio todavía no existía --
-        // ahora que ya tiene id, se mudan a su carpeta definitiva, igual que
-        // hace el form manual. Importante: mover TODO antes de borrar la
-        // carpeta temporal (antes se borraba apenas se movía el logo, lo que
-        // hubiera borrado las fotos de producto sin darles chance de moverse).
         if (! empty($d['logo_path']) && Storage::disk('public')->exists($d['logo_path'])) {
-            $nuevaRuta = 'negocios/'.$negocio->id.'/'.basename($d['logo_path']);
-            Storage::disk('public')->move($d['logo_path'], $nuevaRuta);
-            $negocio->nav_logo = $nuevaRuta;
-            $negocio->save();
-            $datosPropiedades['nav_logo'] = $nuevaRuta;
+            $ruta = $destino.'/'.basename($d['logo_path']);
+            Storage::disk('public')->move($d['logo_path'], $ruta);
+            $d['logo_path'] = $ruta;
         }
 
+        $productos = $sesion->productos ?? [];
         foreach ($productos as &$producto) {
             if (! empty($producto['imagen']) && Storage::disk('public')->exists($producto['imagen'])) {
-                $nuevaRuta = 'negocios/'.$negocio->id.'/'.basename($producto['imagen']);
-                Storage::disk('public')->move($producto['imagen'], $nuevaRuta);
-                $producto['imagen'] = $nuevaRuta;
+                $ruta = $destino.'/'.basename($producto['imagen']);
+                Storage::disk('public')->move($producto['imagen'], $ruta);
+                $producto['imagen'] = $ruta;
             }
         }
         unset($producto);
 
-        Storage::disk('public')->deleteDirectory('onboarding/'.$sesion->token);
+        Storage::disk('public')->deleteDirectory($origen);
 
-        $this->writer->guardarPropiedades($negocio, $datosPropiedades);
-        $this->writer->sincronizarProductos($negocio, $productos);
-
-        $sesion->estado = 'completado';
-        $sesion->negocio_id = $negocio->id;
+        $sesion->datos = $d;
+        $sesion->productos = $productos;
+        $sesion->estado = 'enviada';
+        $sesion->nombre_negocio = $d['nombre'] ?? null;
+        $sesion->contacto = $d['telefono'] ?? $d['celular'] ?? $d['email'] ?? null;
+        $sesion->plantilla_sugerida = $d['plantilla_id'] ?? null;
         $sesion->save();
 
         return response()->json([
-            'redirect' => $negocio->urlPublica(),
-            'editarUrl' => route('negocios.edit', $negocio),
+            'ok' => true,
+            'mensaje' => '¡Recibimos tu pedido! Vamos a armar tu página y te avisamos cuando esté lista. '
+                .'Podés ver el estado en "Mis solicitudes".',
+            'misSolicitudesUrl' => route('solicitudes.mias'),
         ]);
     }
 
     /**
-     * Convierte lo juntado en la sesión (`datos` + `productos`) en los
-     * arrays que espera NegocioWriter -- sin el slug (eso lo calcula
-     * confirmar(), que es el único que necesita chequear unicidad contra la
-     * base). Compartido entre confirmar() (persiste) y preview() (no
-     * persiste), para que no haya dos lugares con la misma lógica.
-     *
-     * `$plantillaIdOverride` deja que `preview()` muestre una plantilla
-     * distinta a la guardada en la sesión, para poder recorrer varias antes
-     * de elegir (sin persistir nada hasta que el usuario confirma).
-     * `$paletaOverride` hace lo mismo para el paso "colores": una clave de
-     * `self::PALETAS` para probarla en la preview antes de tocar "Continuar
-     * con esta paleta" (que es lo único que la persiste de verdad, en
-     * `procesarPasoColores()`).
+     * Wrapper de vista previa sobre OnboardingSesion::mapearParaWriter():
+     * agrega los overrides que solo tienen sentido mientras se elige (sin
+     * persistir). `$plantillaIdOverride` para recorrer plantillas antes de
+     * decidir; `$paletaOverride` (clave de self::PALETAS) para probar una
+     * paleta antes de tocar "Continuar con esta paleta". Ninguno se guarda.
      *
      * @return array{0: array<string,mixed>, 1: array<string,mixed>, 2: int, 3: array}
      */
     private function datosDelPaso(OnboardingSesion $sesion, ?int $plantillaIdOverride = null, ?string $paletaOverride = null): array
     {
-        $d = $sesion->datos ?? [];
+        // El mapeo sesión -> arrays de NegocioWriter vive en el modelo
+        // (lo comparte con la publicación real desde el panel del dev).
+        [$datosNegocio, $datosPropiedades, $plantillaId, $productos] = $sesion->mapearParaWriter($plantillaIdOverride);
 
-        $plantillaId = $plantillaIdOverride ?? (int) ($d['plantilla_id'] ?? 3);
-        // Cae a "Productos" (3) si el id no es una plantilla ofrecida --
-        // misma fuente única (config/plantillas.php) que valida
-        // procesarPasoPlantilla(), así no se pisa en silencio una plantilla
-        // nueva ni en la preview ni al publicar.
-        if (! Plantillas::esDisponible($plantillaId)) {
-            $plantillaId = 3;
-        }
-
-        $datosNegocio = [
-            'nombre' => $d['nombre'] ?? null,
-            'plantilla_id' => $plantillaId,
-            'rubro' => $d['rubro'] ?? null,
-            // `profesion` es una columna separada de `rubro` (la usa el form
-            // manual para distinguir "profesión" de "rubro/categoría"), pero
-            // el chat solo hace una pregunta para las dos cosas -- algunas
-            // plantillas (02, 05) muestran profesion en vez de rubro.
-            'profesion' => $d['rubro'] ?? null,
-            'direccion' => $d['direccion'] ?? null,
-            'ciudad' => $d['ciudad'] ?? null,
-            'zona' => $d['zona'] ?? null,
-            'telefono' => $d['telefono'] ?? null,
-            'celular' => $d['celular'] ?? null,
-            'email' => $d['email'] ?? null,
-        ];
-
-        $colores = $d['colores'] ?? null;
+        // `$paletaOverride` es exclusivo de la vista previa: probar una
+        // paleta antes de tocar "Continuar con esta paleta" (que es lo
+        // único que la persiste, en procesarPasoColores()). No va al modelo
+        // porque nunca se guarda.
         if ($paletaOverride !== null && isset(self::PALETAS[$paletaOverride])) {
             $colorZona = ['fondo' => self::PALETAS[$paletaOverride]['fondo'], 'texto' => self::PALETAS[$paletaOverride]['texto']];
-            $colores = ['header' => $colorZona, 'body' => $colorZona, 'footer' => $colorZona];
-        }
-
-        $datosPropiedades = [
-            'body_titulo' => ! empty($d['nombre']) ? 'Bienvenidos a '.$d['nombre'] : null,
-            'body_subtitulo' => $d['descripcion'] ?? null,
-            'footer_redes_instagram' => $d['instagram'] ?? null,
-            'footer_redes_facebook' => $d['facebook'] ?? null,
-            'colores' => $colores,
-        ];
-
-        $productos = $sesion->productos ?? [];
-
-        // Plantillas con `tarjetas_desde_productos` (hoy solo "Productos"):
-        // además de cargar el catálogo buscable (Fase 2), llenamos las
-        // primeras tarjetas visuales de la página con lo mismo, para no
-        // pedir el dato dos veces.
-        if (Plantillas::tarjetasDesdeProductos($plantillaId)) {
-            foreach (array_slice($productos, 0, 8) as $indice => $producto) {
-                $n = $indice + 1;
-                $datosPropiedades["body_tarjeta_titulo_{$n}"] = $producto['nombre'];
-                $datosPropiedades["body_tarjeta_precio_{$n}"] = $producto['precio'];
-            }
+            $datosPropiedades['colores'] = ['header' => $colorZona, 'body' => $colorZona, 'footer' => $colorZona];
         }
 
         return [$datosNegocio, $datosPropiedades, $plantillaId, $productos];

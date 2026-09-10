@@ -35,17 +35,12 @@
             </form>
 
             <div id="confirmacion" class="nc-chat-confirm" style="display:none">
-                <button class="btn btn-accent" id="btn-confirmar">✅ Confirmar y publicar</button>
+                <button class="btn btn-accent" id="btn-confirmar">✅ Enviar mi pedido</button>
             </div>
 
-            <div id="publicado" class="nc-chat-confirm" style="display:none">
-                <a href="#" id="link-editar" class="btn btn-accent">🖼️ Subir logo y fotos</a>
-                <a href="#" id="link-ver" class="btn btn-outline-info" target="_blank">Ver mi página</a>
+            <div id="enviado" class="nc-chat-confirm" style="display:none">
+                <a href="{{ route('solicitudes.mias') }}" class="btn btn-accent">Ver el estado de mi pedido</a>
             </div>
-
-            <p class="nc-chat-alt-link">
-                <a href="/admin/negocios/crear">¿Preferís cargar los datos en un formulario en vez del chat?</a>
-            </p>
         </div>
     </div>
 
@@ -64,9 +59,7 @@
     const btnEnviar = document.getElementById('btn-enviar');
     const confirmacionDiv = document.getElementById('confirmacion');
     const btnConfirmar = document.getElementById('btn-confirmar');
-    const publicadoDiv = document.getElementById('publicado');
-    const linkEditar = document.getElementById('link-editar');
-    const linkVer = document.getElementById('link-ver');
+    const enviadoDiv = document.getElementById('enviado');
     const extraPaso = document.getElementById('extra-paso');
     const previewFrame = document.getElementById('preview-frame');
 
@@ -400,7 +393,7 @@
 
     btnConfirmar.addEventListener('click', function () {
         btnConfirmar.disabled = true;
-        btnConfirmar.textContent = 'Publicando...';
+        btnConfirmar.textContent = 'Enviando...';
 
         fetch('/chat/negocio/confirmar', {
             method: 'POST',
@@ -413,28 +406,25 @@
         })
             .then(function (r) { return r.json(); })
             .then(function (data) {
-                if (data.redirect) {
-                    agregarMensaje('¡Tu página ya está publicada! Te recomiendo subir el logo y algunas fotos para que quede completa.', 'bot');
-                    linkVer.href = data.redirect;
-                    linkEditar.href = data.editarUrl;
+                if (data.ok) {
+                    agregarMensaje(data.mensaje || '¡Recibimos tu pedido! Te avisamos cuando la página esté lista.', 'bot');
                     confirmacionDiv.style.display = 'none';
-                    publicadoDiv.style.display = 'block';
-                    previewFrame.src = data.redirect; // ya no es un borrador, es la página real publicada
+                    enviadoDiv.style.display = 'block';
                 } else if (data.reabrirChat) {
                     agregarMensaje(data.respuesta || data.error, 'bot');
                     confirmacionDiv.style.display = 'none';
                     form.style.display = '';
                     input.focus();
                 } else {
-                    agregarMensaje('Uy, algo falló al publicar: ' + (data.error || 'error desconocido'), 'bot');
+                    agregarMensaje('Uy, algo falló al enviar el pedido: ' + (data.error || 'error desconocido'), 'bot');
                     btnConfirmar.disabled = false;
-                    btnConfirmar.textContent = '✅ Confirmar y publicar';
+                    btnConfirmar.textContent = '✅ Enviar mi pedido';
                 }
             })
             .catch(function () {
                 agregarMensaje('No pude conectarme al servidor, probá de nuevo.', 'bot');
                 btnConfirmar.disabled = false;
-                btnConfirmar.textContent = '✅ Confirmar y publicar';
+                btnConfirmar.textContent = '✅ Enviar mi pedido';
             });
     });
 </script>

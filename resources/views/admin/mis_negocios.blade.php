@@ -20,7 +20,9 @@
             <p class="text-muted small mb-0">Tus negocios</p>
         </div>
         <div class="text-right">
+            <a href="{{ route('solicitudes.mias') }}" class="btn btn-outline-secondary btn-sm">Mis solicitudes</a>
             @if (auth()->user()->es_admin)
+                <a href="{{ route('solicitudes.index') }}" class="btn btn-outline-info btn-sm">Solicitudes</a>
                 <a href="{{ route('panel.socios') }}" class="btn btn-outline-info btn-sm">Panel interno</a>
             @endif
             <form method="POST" action="{{ route('logout') }}" class="d-inline">
@@ -49,13 +51,15 @@
         </div>
     @empty
         <div class="nc-empty">
-            <p>Todavía no creaste ningún negocio.</p>
+            <p>Todavía no tenés ningún negocio publicado.</p>
         </div>
     @endforelse
 
     <div class="text-center mt-4">
-        <a href="{{ route('chat.negocio') }}" class="btn btn-accent">💬 Crear con el asistente</a>
-        <a href="{{ route('negocios.create') }}" class="btn btn-outline-info">Crear con formulario</a>
+        <a href="{{ route('chat.negocio') }}" class="btn btn-accent">💬 Pedir mi página con el asistente</a>
+        @if (auth()->user()->es_admin)
+            <a href="{{ route('negocios.create') }}" class="btn btn-outline-info">Alta manual (dev)</a>
+        @endif
     </div>
 </div>
 </body>
