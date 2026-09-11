@@ -6,6 +6,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\NegocioAdminController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\SolicitudWebController;
+use App\Http\Controllers\DeployController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PanelInternoController;
 use App\Http\Controllers\MercadoPagoController;
@@ -101,6 +102,11 @@ Route::middleware(['auth', 'es_admin'])->group(function () {
     Route::post('/admin/solicitudes/{solicitud}/crear-negocio', [SolicitudWebController::class, 'crearNegocio'])->name('solicitudes.crearNegocio');
     Route::post('/admin/solicitudes/{solicitud}/estado', [SolicitudWebController::class, 'actualizarEstado'])->name('solicitudes.estado');
     Route::post('/admin/solicitudes/{solicitud}/notas', [SolicitudWebController::class, 'guardarNotas'])->name('solicitudes.notas');
+
+    // Fase 8, Bloque C: deploy de assets (css/js/img) sin depender de FTP
+    // a mano ni de tener consola en Hostinger -- ver App\Services\AssetDeployer.
+    Route::get('/admin/desplegar-assets', [DeployController::class, 'panel'])->name('deploy.assets.panel');
+    Route::post('/admin/desplegar-assets', [DeployController::class, 'desplegarAssets'])->name('deploy.assets');
 });
 
 // Webhook de Mercado Pago (marketplace, ver MercadoPagoService::crearPreferencia())

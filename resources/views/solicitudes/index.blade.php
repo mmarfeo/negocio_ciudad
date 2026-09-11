@@ -18,6 +18,7 @@
         </div>
         <div>
             <a href="{{ route('negocios.create') }}" class="btn btn-outline-info btn-sm">+ Alta manual</a>
+            <a href="{{ route('deploy.assets.panel') }}" class="btn btn-outline-secondary btn-sm">Desplegar assets</a>
             <a href="{{ route('panel.socios') }}" class="btn btn-outline-secondary btn-sm">Panel interno</a>
         </div>
     </div>

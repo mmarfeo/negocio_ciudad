@@ -54,13 +54,41 @@ return [
         // Sin esa variable, cae al comportamiento de siempre
         // (public_path('storage')) -- así no se rompe el entorno local, que
         // no tiene esa carpeta hermana.
-        'public' => [
+        // Fase 8, Bloque B: el disco `public` (el que usan Product/
+        // propiedades_plantillas/NegocioProducto para logos y fotos) puede
+        // ser local (esquema actual, atado a la carpeta hermana public_html
+        // de Hostinger) o S3-compatible (Cloudflare R2 / Backblaze B2).
+        // Cambia con UNA variable -- `PUBLIC_DISK_DRIVER` -- sin tocar
+        // ningún controlador/modelo, porque todos usan Storage::disk('public')
+        // y nunca el nombre del driver. Migrar los archivos ya subidos:
+        // `php artisan storage:migrar-a-s3` (ver app/Console/Commands).
+        'public' => env('PUBLIC_DISK_DRIVER', 'local') === 's3' ? [
+            'driver' => 's3',
+            'key' => env('AWS_ACCESS_KEY_ID'),
+            'secret' => env('AWS_SECRET_ACCESS_KEY'),
+            'region' => env('AWS_DEFAULT_REGION'),
+            'bucket' => env('AWS_BUCKET'),
+            // R2/B2 necesitan `endpoint` propio (no es AWS real) y casi
+            // siempre `use_path_style_endpoint=true`. `url` es la URL
+            // pública base para armar los links (el bucket propio, o un
+            // dominio/CDN propio si lo configuraste delante).
+            'url' => env('AWS_URL'),
+            'endpoint' => env('AWS_ENDPOINT'),
+            'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', true),
+            'visibility' => 'public',
+            'throw' => false,
+        ] : [
             'driver' => 'local',
             'root' => env('PUBLIC_STORAGE_PATH', public_path('storage')),
             'url' => env('APP_URL').'/storage',
             'visibility' => 'public',
         ],
 
+        // Disco S3 explícito (además del `public` de arriba) -- lo usa el
+        // comando `storage:migrar-a-s3` como DESTINO mientras `public`
+        // todavía es local, para poder migrar los archivos antes de hacer
+        // el swap. Misma config; si el bucket no está seteado, Laravel no
+        // lo intenta usar hasta que se le pida explícitamente.
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),
@@ -69,7 +97,9 @@ return [
             'bucket' => env('AWS_BUCKET'),
             'url' => env('AWS_URL'),
             'endpoint' => env('AWS_ENDPOINT'),
-            'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
+            'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', true),
+            'visibility' => 'public',
+            'throw' => false,
         ],
 
     ],
